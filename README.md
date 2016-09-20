@@ -4,7 +4,7 @@ WIP, learning ReactJS
 #Set up
 Clone: `https://github.com/myles91/react`
 
-''' bash
+``` bash
 
 cd React
 
