@@ -1,4 +1,5 @@
 module.exports = {
+	devtool: 'inline-source-map',
 	entry: ['./client/client.js'],
 	output: {
 		path: './dist',
