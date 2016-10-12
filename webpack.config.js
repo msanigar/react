@@ -1,14 +1,16 @@
 var webpack = require('webpack');
+var Router = require('react-router').Router
+var Route = require('react-router').Route
+var Link = require('react-router').Link
 
 module.exports = {
 	devtool: 'inline-source-map',
 	entry: [
-		'webpack-hot-middleware/client',
-		'./client/client.js'
+		'./src/js/app.js'
 	],
 	output: {
-		path: require("path").resolve("./dist"),
-		filename: 'bundle.js',
+		path: require("path").resolve("./build"),
+		filename: 'js/app.js',
 		publicPath: '/'
 	},
 	module: {
@@ -17,13 +19,11 @@ module.exports = {
             exclude: /node_modules/,
             loader: "babel-loader",
             query: {
-            	presets: ['react', 'es2015', 'react-hmre']
+            	presets: ['react', 'es2015']
             }
 		}]
 	},
 	plugins: [
-		new webpack.optimize.OccurrenceOrderPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoErrorsPlugin()
-	]
+	],
+    watch: true
 };

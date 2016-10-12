@@ -9,7 +9,6 @@ Clone: `https://github.com/myles91/react`
 cd React
 
 npm install -g webpack
-npm install -g nodemon
 npm install
 
-npm run serve
+gulp
