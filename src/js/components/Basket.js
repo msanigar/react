@@ -10,22 +10,31 @@ class Basket extends Component {
 		let storeState = store.getState();
 		let data = storeState.products;
 		let title = storeState.title;
+		let img = storeState.img;
+		let desc = storeState.desc;
+		let price = storeState.price;
 		this.state = {
-			products : data,
-			title : title
+			products : data || '',
+			title : title || '',
+			img : img || '',
+			desc : desc || '',
+			price : price || ''
 		};
 	}
 
 	renderItem(item) {
 		return <li key={item.sku}>
-			{item.name}
+			<p>{item.name}</p>
+			<p>{item.desc}</p>
+			<p>{item.price}</p>
+			<img src={item.img}/>
 		</li>
 	}
 
 	render() {
 		return <div>
 			<p>{this.state.title}</p>
-			<ul>
+			<ul id="products">
 				{this.state.products.map(item => this.renderItem(item))}
 			</ul>
          	<br /> 

@@ -19813,9 +19813,15 @@
 			var storeState = _store2.default.getState();
 			var data = storeState.products;
 			var title = storeState.title;
+			var img = storeState.img;
+			var desc = storeState.desc;
+			var price = storeState.price;
 			_this.state = {
-				products: data,
-				title: title
+				products: data || '',
+				title: title || '',
+				img: img || '',
+				desc: desc || '',
+				price: price || ''
 			};
 			return _this;
 		}
@@ -19826,7 +19832,22 @@
 				return _react2.default.createElement(
 					'li',
 					{ key: item.sku },
-					item.name
+					_react2.default.createElement(
+						'p',
+						null,
+						item.name
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						item.desc
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						item.price
+					),
+					_react2.default.createElement('img', { src: item.img })
 				);
 			}
 		}, {
@@ -19844,7 +19865,7 @@
 					),
 					_react2.default.createElement(
 						'ul',
-						null,
+						{ id: 'products' },
 						this.state.products.map(function (item) {
 							return _this2.renderItem(item);
 						})
@@ -25544,14 +25565,20 @@
 	var initialState = {
 	    title: "This is a React-router redux SPA",
 	    products: [{
-	        sku: "1234",
-	        name: "Some product 1"
+	        sku: "001",
+	        name: "Red Shine Pistol",
+	        img: "build/images/p250.png",
+	        desc: "Glorious and shiny",
+	        price: "$3.07"
 	    }, {
-	        sku: "2234",
+	        sku: "002",
 	        name: "Some product 2"
 	    }, {
-	        sku: "3234",
+	        sku: "003",
 	        name: "Some product 3"
+	    }, {
+	        sku: "004",
+	        name: "Some product 4"
 	    }]
 	};
 	

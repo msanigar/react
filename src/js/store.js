@@ -9,16 +9,23 @@ const initialState = {
     title : "This is a React-router redux SPA",
     products : [
     {
-        sku: "1234",
-        name: "Some product 1"
+        sku: "001",
+        name: "Red Shine Pistol",
+        img: "build/images/p250.png",
+        desc: "Glorious and shiny",
+        price: "$3.07"
     },
     {
-        sku: "2234",
+        sku: "002",
         name: "Some product 2"
     },
     {
-        sku: "3234",
+        sku: "003",
         name: "Some product 3"
+    },
+    {
+        sku: "004",
+        name: "Some product 4"
     }
     ]
 };

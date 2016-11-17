@@ -1,0 +1,28 @@
+@media screen and (max-width: 479px) {
+    ul#products {
+        li {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (min-width: 480px) {
+ul#products {
+    li {
+        width: 25%;
+        text-align: center;
+    }
+}
+}
+
+ul#products {
+    li {
+        display: block;
+        float: left;
+        min-height: 300px;
+
+        img {
+            max-width: 150px;
+        }
+    }
+}

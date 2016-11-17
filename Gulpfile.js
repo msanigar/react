@@ -49,6 +49,11 @@ gulp.task('browser-sync', function () {
     });
 });
 
+gulp.task('images', () => {
+    return gulp.src(path.IMAGE)
+        .pipe(gulp.dest(path.IMAGE_OUT));
+});
+
 gulp.task("webpack-dev-server", function (callback) {
     var myConfig = Object.create(webpackConfig);
     myConfig.devtool = "eval";
@@ -70,11 +75,14 @@ var path = {
     MINIFIED_OUT: 'app.min.js',
     DEST_BUILD: 'build/',
     SCSS: 'src/sass/*.scss',
-    CSS: 'build/css/'
+    CSS: 'build/css/',
+    HTML: '*.html',
+    IMAGE: 'src/images/*',
+    IMAGE_OUT: 'build/images/'
 };
 
 gulp.task('watch', function () {
     gulp.watch(path.ALL, ['webpack', 'sass', 'browser-sync']);
 });
 
-gulp.task('default', ['webpack-dev-server', 'watch', 'browser-sync']);
+gulp.task('default', ['webpack-dev-server', 'images', 'watch', 'browser-sync']);
