@@ -2,6 +2,12 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 const mainReducer = (state = initialState, action) => {
+
+    if(action.type === "ADD_TO_BASKET") {
+        return Object.assign({}, state, {
+        basket: action.payload
+      })
+    }
 	return state;
 };
 
@@ -27,7 +33,8 @@ const initialState = {
         sku: "004",
         name: "Some product 4"
     }
-    ]
+    ],
+    basket : 0
 };
 
 let store;

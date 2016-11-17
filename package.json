@@ -29,6 +29,7 @@
     "gulp-util": "^3.0.6",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-redux": "^4.4.6",
     "react-router": "^2.8.1",
     "webpack": "^1.10.5",
     "webpack-dev-server": "^1.10.1",
