@@ -1,5 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import { loadState, saveState } from './localStorage';
+
+
 
 const mainReducer = (state = initialState, action) => {
     
@@ -111,9 +114,14 @@ const initialState = {
 };
 
 let store;
-
-store = createStore(mainReducer, initialState, compose(
+const persistedState = loadState(initialState);
+store = createStore(mainReducer, persistedState, compose(
 		applyMiddleware(thunk)
 	));
+
+store.subscribe(() => {
+    // TODO:  fix funky error: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component.
+    saveState(store.getState());
+})
 
 export default store;

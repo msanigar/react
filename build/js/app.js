@@ -25648,6 +25648,8 @@
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
+	var _localStorage = __webpack_require__(275);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mainReducer = function mainReducer() {
@@ -25758,8 +25760,13 @@
 	};
 	
 	var store = void 0;
+	var persistedState = (0, _localStorage.loadState)(initialState);
+	store = (0, _redux.createStore)(mainReducer, persistedState, (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default)));
 	
-	store = (0, _redux.createStore)(mainReducer, initialState, (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default)));
+	store.subscribe(function () {
+	    // TODO:  fix funky error: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component.
+	    (0, _localStorage.saveState)(store.getState());
+	});
 	
 	exports.default = store;
 
@@ -28731,6 +28738,36 @@
 	};
 	
 	module.exports = ReactTransitionEvents;
+
+/***/ },
+/* 275 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var loadState = exports.loadState = function loadState(initialState) {
+		try {
+			var serializedState = localStorage.getItem('state');
+			if (serializedState === null) {
+				return initialState;
+			}
+			return JSON.parse(serializedState);
+		} catch (err) {
+			return undefined;
+		}
+	};
+	
+	var saveState = exports.saveState = function saveState(state) {
+		try {
+			var serializedState = JSON.stringify(state);
+			localStorage.setItem('state', serializedState);
+		} catch (err) {
+			// ignore errors
+		}
+	};
 
 /***/ }
 /******/ ]);
