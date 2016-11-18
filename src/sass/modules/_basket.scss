@@ -23,6 +23,30 @@ ul#products {
 
         img {
             max-width: 150px;
+            margin: 0 auto;
+            display: block;
         }
     }
+}
+
+#miniBasket {
+    min-height: 150px;
+    width: 100%;
+
+    div {
+        max-width: 100px;
+        float: left;
+        display: block;
+
+        p {
+            padding: 0;
+            margin: 0;
+            line-height: 1em;
+        }
+    }
+}
+
+#basketTotal {
+    float: right;
+    height: 100px;
 }

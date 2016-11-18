@@ -40,9 +40,18 @@ class Basket extends Component {
 			<p>{item.name}</p>
 			<p>{item.desc}</p>
 			<p>£{item.price.toFixed(2)}</p>
-			<img style={{cursor: "pointer"}} src={item.img} onClick={this.addButton.bind(this, item)} />
-			<button onClick={this.removeButton.bind(this, item)}>Remove</button>
+			<img src={item.img}  />
+			<button onClick={this.addButton.bind(this, item)}>Add</button>
 		</li>
+	}
+
+	renderItemMb(item) {
+		return <div key={item.sku}>
+			<p>{item.name}</p>
+			<p>£{item.price.toFixed(2)}</p>
+			<p>Quantity: {item.qty}</p>
+			<button onClick={this.removeButton.bind(this, item)}>Remove</button>
+		</div>
 	}
 
 	addButton(item) {
@@ -55,10 +64,14 @@ class Basket extends Component {
 
 	render() {
 		return <div>
-			<p>{this.state.title}</p> <p>Basket total: £{this.state.basket.total.toFixed(2)}</p>
-			<ul id="products">
-				{this.state.products.map(item => this.renderItem(item))}
-			</ul>
+			<p>{this.state.title}</p>
+				<div id="miniBasket">
+				{this.state.basket.items.map(items => this.renderItemMb(items))}
+				<p id="basketTotal">Basket total: £{this.state.basket.total.toFixed(2)}</p>
+				</div>
+					<ul id="products">
+						{this.state.products.map(item => this.renderItem(item))}
+					</ul>
          	<br /> 
 			<Link to='contact'> Continue </Link>
 		</div>

@@ -23,6 +23,7 @@ function addToBasket(state, action) {
     } else {
         newState.basket.items.push({
             sku: action.item.sku, 
+            name: action.item.name,
             qty: 1, 
             price: action.item.price
         });
