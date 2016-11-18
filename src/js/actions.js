@@ -1,15 +1,7 @@
 import store from './store'
 
-export function addToBasket(number) {
-    return { type: ADD_TO_BASKET,
-	    payload: {
-	    	basket: 1
-	    }
-	}
+export const ADD_TO_BASKET = "ADD_TO_BASKET";
+
+export function addToBasket(item) {
+    return { type: ADD_TO_BASKET, item: item };
 }
-
-store.subscribe(() => {
-    console.log("Store changed", store.getState())
-})
-
-store.dispatch({type: "ADD_TO_BASKET", payload: 1})
