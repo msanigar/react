@@ -39,18 +39,23 @@ class Basket extends Component {
 		return <li key={item.sku}>
 			<p>{item.name}</p>
 			<p>{item.desc}</p>
-			<p>£{item.price}</p>
-			<img style={{cursor: "pointer"}} src={item.img} onClick={this.handClick.bind(this, item)} />
+			<p>£{item.price.toFixed(2)}</p>
+			<img style={{cursor: "pointer"}} src={item.img} onClick={this.addButton.bind(this, item)} />
+			<button onClick={this.removeButton.bind(this, item)}>Remove</button>
 		</li>
 	}
 
-	handClick(item) {
+	addButton(item) {
 		store.dispatch(actions.addToBasket(item));
+	}
+
+	removeButton(item) {
+		store.dispatch(actions.removeFromBasket(item));
 	}
 
 	render() {
 		return <div>
-			<p>{this.state.title}</p> <p>Basket total: £{this.state.basket.total}</p>
+			<p>{this.state.title}</p> <p>Basket total: £{this.state.basket.total.toFixed(2)}</p>
 			<ul id="products">
 				{this.state.products.map(item => this.renderItem(item))}
 			</ul>

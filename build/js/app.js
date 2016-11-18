@@ -19874,15 +19874,25 @@
 						'p',
 						null,
 						'\xA3',
-						item.price
+						item.price.toFixed(2)
 					),
-					_react2.default.createElement('img', { style: { cursor: "pointer" }, src: item.img, onClick: this.handClick.bind(this, item) })
+					_react2.default.createElement('img', { style: { cursor: "pointer" }, src: item.img, onClick: this.addButton.bind(this, item) }),
+					_react2.default.createElement(
+						'button',
+						{ onClick: this.removeButton.bind(this, item) },
+						'Remove'
+					)
 				);
 			}
 		}, {
-			key: 'handClick',
-			value: function handClick(item) {
+			key: 'addButton',
+			value: function addButton(item) {
 				_store2.default.dispatch(actions.addToBasket(item));
+			}
+		}, {
+			key: 'removeButton',
+			value: function removeButton(item) {
+				_store2.default.dispatch(actions.removeFromBasket(item));
 			}
 		}, {
 			key: 'render',
@@ -19902,7 +19912,7 @@
 						'p',
 						null,
 						'Basket total: \xA3',
-						this.state.basket.total
+						this.state.basket.total.toFixed(2)
 					),
 					_react2.default.createElement(
 						'ul',
@@ -25601,8 +25611,12 @@
 	    var action = arguments[1];
 	
 	
-	    if (action.type === "ADD_TO_BASKET") {
+	    if (action.type === 'ADD_TO_BASKET') {
 	        return addToBasket(state, action);
+	    }
+	
+	    if (action.type === 'REMOVE_FROM_BASKET') {
+	        return removeFromBasket(state, action);
 	    }
 	
 	    return state;
@@ -25610,44 +25624,87 @@
 	
 	function addToBasket(state, action) {
 	    var newState = Object.assign({}, state);
-	    newState.basket.total += action.item.price;
-	    var existingItems = newState.basket.items.filter(function (item) {
-	        return item.sku === action.item.sku;
-	    });
-	    if (existingItems.length) {
-	        existingItems[0].qty++;
+	    var existingItem = returnExistingItemFromBasket(newState, action.item.sku);
+	
+	    if (existingItem) {
+	        existingItem.qty++;
 	    } else {
-	        newState.basket.items.push({ sku: action.item.sku, "qty": 1 });
+	        newState.basket.items.push({
+	            sku: action.item.sku,
+	            qty: 1,
+	            price: action.item.price
+	        });
 	    }
+	
+	    newState.basket.total = calculatePrice(newState);
+	
 	    return newState;
 	}
 	
+	function removeFromBasket(state, action) {
+	    var newState = Object.assign({}, state);
+	    var existingItem = returnExistingItemFromBasket(newState, action.item.sku);
+	
+	    if (existingItem) {
+	        if (existingItem.qty > 1) {
+	            existingItem.qty--;
+	        } else {
+	            var indexInArray = newState.basket.items.indexOf(existingItem);
+	            if (indexInArray > -1) {
+	                newState.basket.items.splice(indexInArray, 1);
+	            }
+	        }
+	
+	        newState.basket.total = calculatePrice(newState);
+	    }
+	
+	    return newState;
+	}
+	
+	function returnExistingItemFromBasket(state, sku) {
+	    var existingItems = state.basket.items.filter(function (item) {
+	        return item.sku === sku;
+	    });
+	
+	    return existingItems.length && existingItems[0];
+	}
+	
+	function calculatePrice(state) {
+	    var total = 0;
+	
+	    for (var i = 0; i < state.basket.items.length; i++) {
+	        var item = state.basket.items[i];
+	        total += item.price * item.qty;
+	    }
+	    return total;
+	}
+	
 	var initialState = {
-	    title: "This is a React-router redux SPA",
+	    title: 'This is a React-router redux SPA',
 	    products: [{
-	        sku: "001",
-	        name: "Red Shine Pistol",
-	        img: "build/images/p250.png",
-	        desc: "Glorious and shiny",
+	        sku: '001',
+	        name: 'Red Shine Pistol',
+	        img: 'build/images/p250.png',
+	        desc: 'Glorious and shiny',
 	        price: 1.99
 	    }, {
-	        sku: "002",
-	        name: "Red Shine Pistol",
-	        img: "build/images/p250.png",
-	        desc: "Glorious and shiny",
-	        price: 1.99
+	        sku: '002',
+	        name: 'Red Shine Pistol',
+	        img: 'build/images/p250.png',
+	        desc: 'Glorious and shiny',
+	        price: 2.59
 	    }, {
-	        sku: "003",
-	        name: "Red Shine Pistol",
-	        img: "build/images/p250.png",
-	        desc: "Glorious and shiny",
-	        price: 1.99
+	        sku: '003',
+	        name: 'Red Shine Pistol',
+	        img: 'build/images/p250.png',
+	        desc: 'Glorious and shiny',
+	        price: 3.19
 	    }, {
-	        sku: "004",
-	        name: "Red Shine Pistol",
-	        img: "build/images/p250.png",
-	        desc: "Glorious and shiny",
-	        price: 1.99
+	        sku: '004',
+	        name: 'Red Shine Pistol',
+	        img: 'build/images/p250.png',
+	        desc: 'Glorious and shiny',
+	        price: 1.54
 	    }],
 	    basket: {
 	        total: 0,
@@ -26582,10 +26639,11 @@
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
-	exports.ADD_TO_BASKET = undefined;
+	exports.REMOVE_FROM_BASKET = exports.ADD_TO_BASKET = undefined;
 	exports.addToBasket = addToBasket;
+	exports.removeFromBasket = removeFromBasket;
 	
 	var _store = __webpack_require__(224);
 	
@@ -26594,9 +26652,14 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var ADD_TO_BASKET = exports.ADD_TO_BASKET = "ADD_TO_BASKET";
+	var REMOVE_FROM_BASKET = exports.REMOVE_FROM_BASKET = "REMOVE_FROM_BASKET";
 	
 	function addToBasket(item) {
-	    return { type: ADD_TO_BASKET, item: item };
+	  return { type: ADD_TO_BASKET, item: item };
+	}
+	
+	function removeFromBasket(item) {
+	  return { type: REMOVE_FROM_BASKET, item: item };
 	}
 
 /***/ },
