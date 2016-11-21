@@ -120,7 +120,6 @@ store = createStore(mainReducer, persistedState, compose(
 	));
 
 store.subscribe(() => {
-    // TODO:  fix funky error: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component.
     saveState(store.getState());
 })
 

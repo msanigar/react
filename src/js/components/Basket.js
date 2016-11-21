@@ -7,8 +7,9 @@ class Basket extends Component {
 
 	constructor(props) {
 		super(props);
+	}
 
-		store.subscribe(this.onStoreUpdated.bind(this));
+	componentWillMount() {
 		let storeState = store.getState();
 		let data = storeState.products;
 		let title = storeState.title;
@@ -16,8 +17,13 @@ class Basket extends Component {
 		this.state = {
 			products : data,
 			basket : basket,
-			title : title
+			title : title,
+			unsubscribe: store.subscribe(this.onStoreUpdated.bind(this))
 		};
+	}
+
+	componentWillUnmount() {
+		this.state.unsubscribe();
 	}
 
 	onStoreUpdated() {
