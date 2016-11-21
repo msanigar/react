@@ -25672,8 +25672,22 @@
 	        return removeFromBasket(state, action);
 	    }
 	
+	    if (action.type === 'UPDATE_FORM') {
+	        return updateForm(state, action);
+	    }
+	
 	    return state;
 	};
+	
+	function updateForm(state, action) {
+	    var newState = Object.assign({}, state);
+	    var value = action.event.target.value;
+	    var field = action.event.target.getAttribute('data-contacttype');
+	
+	    newState.contact[field] = value;
+	
+	    return newState;
+	}
 	
 	function addToBasket(state, action) {
 	    var newState = Object.assign({}, state);
@@ -25763,7 +25777,8 @@
 	    basket: {
 	        total: 0,
 	        items: []
-	    }
+	    },
+	    contact: {}
 	};
 	
 	var store = void 0;
@@ -26727,11 +26742,12 @@
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
-	exports.REMOVE_FROM_BASKET = exports.ADD_TO_BASKET = undefined;
+	exports.UPDATE_FORM = exports.REMOVE_FROM_BASKET = exports.ADD_TO_BASKET = undefined;
 	exports.addToBasket = addToBasket;
 	exports.removeFromBasket = removeFromBasket;
+	exports.updateForm = updateForm;
 	
 	var _store = __webpack_require__(224);
 	
@@ -26741,13 +26757,18 @@
 	
 	var ADD_TO_BASKET = exports.ADD_TO_BASKET = "ADD_TO_BASKET";
 	var REMOVE_FROM_BASKET = exports.REMOVE_FROM_BASKET = "REMOVE_FROM_BASKET";
+	var UPDATE_FORM = exports.UPDATE_FORM = "UPDATE_FORM";
 	
 	function addToBasket(item) {
-	  return { type: ADD_TO_BASKET, item: item };
+	    return { type: ADD_TO_BASKET, item: item };
 	}
 	
 	function removeFromBasket(item) {
-	  return { type: REMOVE_FROM_BASKET, item: item };
+	    return { type: REMOVE_FROM_BASKET, item: item };
+	}
+	
+	function updateForm(event) {
+	    return { type: UPDATE_FORM, event: event };
 	}
 
 /***/ },
@@ -26772,6 +26793,12 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
+	var _actions = __webpack_require__(242);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26786,19 +26813,47 @@
 	    function Contact(props) {
 	        _classCallCheck(this, Contact);
 	
-	        var _this = _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).call(this, props));
-	
-	        var storeState = _store2.default.getState();
-	        var data = storeState.products;
-	        var title = storeState.title;
-	        _this.state = {
-	            products: data,
-	            title: title
-	        };
-	        return _this;
+	        return _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).call(this, props));
 	    }
 	
 	    _createClass(Contact, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var storeState = _store2.default.getState();
+	            var data = storeState.products;
+	            var title = storeState.title;
+	            var contact = storeState.contact;
+	            var basket = storeState.basket;
+	            this.state = {
+	                products: data,
+	                title: title,
+	                contact: contact,
+	                basket: basket,
+	                unsubscribe: _store2.default.subscribe(this.onStoreUpdated.bind(this))
+	            };
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            this.state.unsubscribe();
+	        }
+	    }, {
+	        key: 'onStoreUpdated',
+	        value: function onStoreUpdated() {
+	
+	            var storeState = _store2.default.getState();
+	            var contact = storeState.contact;
+	
+	            this.setState({
+	                contact: contact
+	            });
+	        }
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(event) {
+	            _store2.default.dispatch(actions.updateForm(event));
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -26811,9 +26866,74 @@
 	                ),
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    'Give me your details!'
+	                    'form',
+	                    { id: 'contact' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-half left' },
+	                        'Forename: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'fname', value: this.state.contact.fname, onChange: this.handleChange }),
+	                        'Surname: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'sname', value: this.state.contact.sname, onChange: this.handleChange }),
+	                        'Email: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'email', value: this.state.contact.email, onChange: this.handleChange }),
+	                        'Phone: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'phone', value: this.state.contact.phone, onChange: this.handleChange }),
+	                        'Address line 1: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr1', value: this.state.contact.addr1, onChange: this.handleChange }),
+	                        'Address line 2: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr2', value: this.state.contact.addr2, onChange: this.handleChange }),
+	                        'Postcode: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'pcode', value: this.state.contact.pcode, onChange: this.handleChange }),
+	                        'City: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'city', value: this.state.contact.city, onChange: this.handleChange })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { id: 'delDetails', className: 'form-half right' },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Your order will be delivered to: '
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.fname,
+	                            ' ',
+	                            this.state.contact.sname
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.addr1
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.addr2
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.pcode
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.city
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'If we need to get in touch, we\'ll contact you at: ',
+	                            this.state.contact.phone,
+	                            ' & ',
+	                            this.state.contact.email
+	                        )
+	                    )
 	                ),
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(

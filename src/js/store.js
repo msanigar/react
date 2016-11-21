@@ -14,8 +14,23 @@ const mainReducer = (state = initialState, action) => {
         return removeFromBasket(state, action);
     }
 
+    if(action.type === 'UPDATE_FORM') {
+        return updateForm(state, action);
+    }
+
 	return state;
 };
+
+function updateForm(state, action) {
+    var newState = Object.assign({}, state);
+    var value = action.event.target.value;
+    var field = action.event.target.getAttribute('data-contacttype');
+
+    newState.contact[field] = value;
+
+    return newState;
+    
+}
 
 function addToBasket(state, action) {
     var newState = Object.assign({}, state);
@@ -110,7 +125,8 @@ const initialState = {
     basket : {
         total: 0,
         items: []
-    }
+    },
+    contact : {}
 };
 
 let store;
