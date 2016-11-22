@@ -67,33 +67,43 @@
 	
 	var _Contact2 = _interopRequireDefault(_Contact);
 	
+	var _Payment = __webpack_require__(244);
+	
+	var _Payment2 = _interopRequireDefault(_Payment);
+	
+	var _Complete = __webpack_require__(245);
+	
+	var _Complete2 = _interopRequireDefault(_Complete);
+	
 	var _reactRouter = __webpack_require__(161);
 	
-	var _reactRedux = __webpack_require__(244);
+	var _reactRedux = __webpack_require__(246);
 	
 	var _store = __webpack_require__(224);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _reactAddonsCssTransitionGroup = __webpack_require__(251);
+	var _reactAddonsCssTransitionGroup = __webpack_require__(253);
 	
 	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	(0, _reactDom.render)(_react2.default.createElement(
-		_reactAddonsCssTransitionGroup2.default,
-		{ transitionName: 'example', transitionAppear: true, transitionAppearTimeout: 1500, transitionEnterTimeout: 300, transitionLeaveTimeout: 300 },
-		_react2.default.createElement(
-			_reactRedux.Provider,
-			{ store: _store2.default },
+			_reactAddonsCssTransitionGroup2.default,
+			{ transitionName: 'example', transitionAppear: true, transitionAppearTimeout: 1500, transitionEnterTimeout: 300, transitionLeaveTimeout: 300 },
 			_react2.default.createElement(
-				_reactRouter.Router,
-				{ history: _reactRouter.browserHistory },
-				_react2.default.createElement(_reactRouter.Route, { path: '/', component: _Basket2.default }),
-				_react2.default.createElement(_reactRouter.Route, { path: 'contact', component: _Contact2.default })
+					_reactRedux.Provider,
+					{ store: _store2.default },
+					_react2.default.createElement(
+							_reactRouter.Router,
+							{ history: _reactRouter.browserHistory },
+							_react2.default.createElement(_reactRouter.Route, { path: '/', component: _Basket2.default }),
+							_react2.default.createElement(_reactRouter.Route, { path: 'contact', component: _Contact2.default }),
+							_react2.default.createElement(_reactRouter.Route, { path: 'payment', component: _Payment2.default }),
+							_react2.default.createElement(_reactRouter.Route, { path: 'complete', component: _Complete2.default })
+					)
 			)
-		)
 	), document.getElementById('app'));
 
 /***/ },
@@ -19949,8 +19959,29 @@
 					null,
 					_react2.default.createElement(
 						'p',
-						null,
+						{ className: 'title' },
 						this.state.title
+					),
+					_react2.default.createElement(
+						'ul',
+						{ id: 'breadcrumbs' },
+						_react2.default.createElement(
+							'li',
+							{ className: 'active' },
+							'Basket'
+						),
+						'  >  ',
+						_react2.default.createElement(
+							'li',
+							null,
+							'Contact Details'
+						),
+						'  >  ',
+						_react2.default.createElement(
+							'li',
+							null,
+							'Payment'
+						)
 					),
 					_react2.default.createElement(
 						'div',
@@ -25683,6 +25714,10 @@
 	        return updateForm(state, action);
 	    }
 	
+	    if (action.type === 'UPDATE_PAY') {
+	        return updatePay(state, action);
+	    }
+	
 	    return state;
 	};
 	
@@ -25692,6 +25727,16 @@
 	    var field = action.event.target.getAttribute('data-contacttype');
 	
 	    newState.contact[field] = value;
+	
+	    return newState;
+	}
+	
+	function updatePay(state, action) {
+	    var newState = Object.assign({}, state);
+	    var value = action.event.target.value;
+	    var field = action.event.target.getAttribute('data-paymenttype');
+	
+	    newState.payment[field] = value;
 	
 	    return newState;
 	}
@@ -25785,7 +25830,8 @@
 	        total: 0,
 	        items: []
 	    },
-	    contact: {}
+	    contact: {},
+	    payment: {}
 	};
 	
 	var store = void 0;
@@ -26751,10 +26797,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.UPDATE_FORM = exports.REMOVE_FROM_BASKET = exports.ADD_TO_BASKET = undefined;
+	exports.UPDATE_PAY = exports.UPDATE_FORM = exports.REMOVE_FROM_BASKET = exports.ADD_TO_BASKET = undefined;
 	exports.addToBasket = addToBasket;
 	exports.removeFromBasket = removeFromBasket;
 	exports.updateForm = updateForm;
+	exports.updatePay = updatePay;
 	
 	var _store = __webpack_require__(224);
 	
@@ -26765,6 +26812,7 @@
 	var ADD_TO_BASKET = exports.ADD_TO_BASKET = "ADD_TO_BASKET";
 	var REMOVE_FROM_BASKET = exports.REMOVE_FROM_BASKET = "REMOVE_FROM_BASKET";
 	var UPDATE_FORM = exports.UPDATE_FORM = "UPDATE_FORM";
+	var UPDATE_PAY = exports.UPDATE_PAY = "UPDATE_PAY";
 	
 	function addToBasket(item) {
 	    return { type: ADD_TO_BASKET, item: item };
@@ -26776,6 +26824,10 @@
 	
 	function updateForm(event) {
 	    return { type: UPDATE_FORM, event: event };
+	}
+	
+	function updatePay(event) {
+	    return { type: UPDATE_PAY, event: event };
 	}
 
 /***/ },
@@ -26868,8 +26920,33 @@
 	                null,
 	                _react2.default.createElement(
 	                    'p',
-	                    null,
+	                    { className: 'title' },
 	                    this.state.title
+	                ),
+	                _react2.default.createElement(
+	                    'ul',
+	                    { id: 'breadcrumbs' },
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/' },
+	                            'Basket'
+	                        )
+	                    ),
+	                    '  >  ',
+	                    _react2.default.createElement(
+	                        'li',
+	                        { className: 'active' },
+	                        'Contact Details'
+	                    ),
+	                    '  >  ',
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        'Payment'
+	                    )
 	                ),
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(
@@ -26945,8 +27022,13 @@
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { className: 'proceed', to: '/' },
+	                    { className: 'proceed back', to: '/' },
 	                    ' Go back '
+	                ),
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { className: 'proceed', to: 'payment' },
+	                    ' Continue '
 	                )
 	            );
 	        }
@@ -26963,14 +27045,419 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(161);
+	
+	var _store = __webpack_require__(224);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _actions = __webpack_require__(242);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Payment = function (_Component) {
+	    _inherits(Payment, _Component);
+	
+	    function Payment(props) {
+	        _classCallCheck(this, Payment);
+	
+	        return _possibleConstructorReturn(this, (Payment.__proto__ || Object.getPrototypeOf(Payment)).call(this, props));
+	    }
+	
+	    _createClass(Payment, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var storeState = _store2.default.getState();
+	            var data = storeState.products;
+	            var title = storeState.title;
+	            var contact = storeState.contact;
+	            var basket = storeState.basket;
+	            var payment = storeState.payment;
+	            this.state = {
+	                products: data,
+	                title: title,
+	                contact: contact,
+	                basket: basket,
+	                payment: payment,
+	                unsubscribe: _store2.default.subscribe(this.onStoreUpdated.bind(this))
+	            };
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            this.state.unsubscribe();
+	        }
+	    }, {
+	        key: 'onStoreUpdated',
+	        value: function onStoreUpdated() {
+	
+	            var storeState = _store2.default.getState();
+	            var payment = storeState.payment;
+	
+	            this.setState({
+	                payment: payment
+	            });
+	        }
+	    }, {
+	        key: 'handleChangePay',
+	        value: function handleChangePay(event) {
+	            _store2.default.dispatch(actions.updatePay(event));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'p',
+	                    { className: 'title' },
+	                    this.state.title
+	                ),
+	                _react2.default.createElement(
+	                    'ul',
+	                    { id: 'breadcrumbs' },
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/' },
+	                            'Basket'
+	                        )
+	                    ),
+	                    '  >  ',
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: 'contact' },
+	                            'Contact Details'
+	                        )
+	                    ),
+	                    '  >  ',
+	                    _react2.default.createElement(
+	                        'li',
+	                        { className: 'active' },
+	                        'Payment'
+	                    )
+	                ),
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(
+	                    'form',
+	                    { id: 'payment' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-half left' },
+	                        'Card number: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'card', value: this.state.payment.card, onChange: this.handleChangePay }),
+	                        'Name on card: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'name', value: this.state.payment.name, onChange: this.handleChangePay }),
+	                        'Expiration date: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'date', value: this.state.payment.date, onChange: this.handleChangePay }),
+	                        'CCV: ',
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'ccv', value: this.state.payment.ccv, onChange: this.handleChangePay })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { id: 'delDetails', className: 'form-half right' },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Please, for obvious reasons don\'t use real card details.  Validation will only accept the following:'
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Card number: 4'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Name on card: Magic Bob'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Expiration data: 01/20'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'CCV: 123'
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { className: 'proceed back', to: 'contact' },
+	                    ' Go back '
+	                ),
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { className: 'proceed pay', to: 'complete' },
+	                    ' Pay Now '
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Payment;
+	}(_react.Component);
+	
+	exports.default = Payment;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(161);
+	
+	var _store = __webpack_require__(224);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _actions = __webpack_require__(242);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Complete = function (_Component) {
+	    _inherits(Complete, _Component);
+	
+	    function Complete(props) {
+	        _classCallCheck(this, Complete);
+	
+	        return _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
+	    }
+	
+	    _createClass(Complete, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var storeState = _store2.default.getState();
+	            var data = storeState.products;
+	            var title = storeState.title;
+	            var contact = storeState.contact;
+	            var basket = storeState.basket;
+	            var payment = storeState.payment;
+	            this.state = {
+	                products: data,
+	                title: title,
+	                contact: contact,
+	                basket: basket,
+	                payment: payment,
+	                unsubscribe: _store2.default.subscribe(this.onStoreUpdated.bind(this))
+	            };
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            this.state.unsubscribe();
+	        }
+	    }, {
+	        key: 'renderItemMb',
+	        value: function renderItemMb(item) {
+	            return _react2.default.createElement(
+	                'div',
+	                { key: item.sku },
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    item.name
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    '\xA3',
+	                    item.price.toFixed(2)
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Quantity: ',
+	                    item.qty
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'onStoreUpdated',
+	        value: function onStoreUpdated() {
+	
+	            var storeState = _store2.default.getState();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+	
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { id: 'complete' },
+	                    _react2.default.createElement(
+	                        'p',
+	                        { className: 'title' },
+	                        this.state.title
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'half' },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Thanks for your order!'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Your order number is:  1128586'
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.basket.items.map(function (items) {
+	                                return _this2.renderItemMb(items);
+	                            })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'half' },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.fname,
+	                            ' ',
+	                            this.state.contact.sname
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.addr1
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.addr2
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.pcode
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.contact.city
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Card number:',
+	                            this.state.payment.card
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Name on card: ',
+	                            this.state.payment.name
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Expiration data: ',
+	                            this.state.payment.data
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'CCV: ',
+	                            this.state.payment.ccv
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Your delivery will be with you at some point'
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { className: 'proceed back', to: '/' },
+	                    ' Return '
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Complete;
+	}(_react.Component);
+	
+	exports.default = Complete;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(245);
+	var _Provider = __webpack_require__(247);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connect = __webpack_require__(248);
+	var _connect = __webpack_require__(250);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -26980,7 +27467,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 245 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -26990,11 +27477,11 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(246);
+	var _storeShape = __webpack_require__(248);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _warning = __webpack_require__(247);
+	var _warning = __webpack_require__(249);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -27064,7 +27551,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 246 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27080,7 +27567,7 @@
 	});
 
 /***/ },
-/* 247 */
+/* 249 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27110,7 +27597,7 @@
 	}
 
 /***/ },
-/* 248 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27123,19 +27610,19 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(246);
+	var _storeShape = __webpack_require__(248);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _shallowEqual = __webpack_require__(249);
+	var _shallowEqual = __webpack_require__(251);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _wrapActionCreators = __webpack_require__(250);
+	var _wrapActionCreators = __webpack_require__(252);
 	
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 	
-	var _warning = __webpack_require__(247);
+	var _warning = __webpack_require__(249);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -27511,7 +27998,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 249 */
+/* 251 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27542,7 +28029,7 @@
 	}
 
 /***/ },
-/* 250 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27559,13 +28046,13 @@
 	}
 
 /***/ },
-/* 251 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(252);
+	module.exports = __webpack_require__(254);
 
 /***/ },
-/* 252 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27586,8 +28073,8 @@
 	
 	var assign = __webpack_require__(40);
 	
-	var ReactTransitionGroup = __webpack_require__(253);
-	var ReactCSSTransitionGroupChild = __webpack_require__(255);
+	var ReactTransitionGroup = __webpack_require__(255);
+	var ReactCSSTransitionGroupChild = __webpack_require__(257);
 	
 	function createTransitionTimeoutPropValidator(transitionType) {
 	  var timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -27653,7 +28140,7 @@
 	module.exports = ReactCSSTransitionGroup;
 
 /***/ },
-/* 253 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27670,7 +28157,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var ReactTransitionChildMapping = __webpack_require__(254);
+	var ReactTransitionChildMapping = __webpack_require__(256);
 	
 	var assign = __webpack_require__(40);
 	var emptyFunction = __webpack_require__(16);
@@ -27863,7 +28350,7 @@
 	module.exports = ReactTransitionGroup;
 
 /***/ },
-/* 254 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27966,7 +28453,7 @@
 	module.exports = ReactTransitionChildMapping;
 
 /***/ },
-/* 255 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27986,8 +28473,8 @@
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(4);
 	
-	var CSSCore = __webpack_require__(256);
-	var ReactTransitionEvents = __webpack_require__(257);
+	var CSSCore = __webpack_require__(258);
+	var ReactTransitionEvents = __webpack_require__(259);
 	
 	var onlyChild = __webpack_require__(157);
 	
@@ -28136,7 +28623,7 @@
 	module.exports = ReactCSSTransitionGroupChild;
 
 /***/ },
-/* 256 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28239,7 +28726,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 257 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**

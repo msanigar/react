@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import store from '../store'
 import * as actions from '../actions'
 
@@ -46,7 +46,8 @@ class Contact extends Component {
 
     render() {
         return <div>
-            <p>{this.state.title}</p>
+            <p className="title">{this.state.title}</p>
+            <ul id="breadcrumbs"><li><Link to='/'>Basket</Link></li>  >  <li className="active">Contact Details</li>  >  <li>Payment</li></ul>
             <br /> 
                  <form id="contact">
                     <div className="form-half left">
@@ -72,7 +73,8 @@ class Contact extends Component {
                     </div>
                 </form>
             <br />
-            <Link className="proceed" to='/'> Go back </Link>
+            <Link className="proceed back" to='/'> Go back </Link>
+            <Link className="proceed" to='payment'> Continue </Link>
         </div>
     }
 }

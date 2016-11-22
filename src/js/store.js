@@ -18,6 +18,10 @@ const mainReducer = (state = initialState, action) => {
         return updateForm(state, action);
     }
 
+    if(action.type === 'UPDATE_PAY') {
+        return updatePay(state, action);
+    }
+
 	return state;
 };
 
@@ -27,6 +31,17 @@ function updateForm(state, action) {
     var field = action.event.target.getAttribute('data-contacttype');
 
     newState.contact[field] = value;
+
+    return newState;
+    
+}
+
+function updatePay(state, action) {
+    var newState = Object.assign({}, state);
+    var value = action.event.target.value;
+    var field = action.event.target.getAttribute('data-paymenttype');
+
+    newState.payment[field] = value;
 
     return newState;
     
@@ -126,7 +141,8 @@ const initialState = {
         total: 0,
         items: []
     },
-    contact : {}
+    contact : {},
+    payment : {}
 };
 
 let store;

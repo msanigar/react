@@ -70,7 +70,8 @@ class Basket extends Component {
 
 	render() {
 		return <div>
-			<p>{this.state.title}</p>
+			<p className="title">{this.state.title}</p>
+			<ul id="breadcrumbs"><li className="active">Basket</li>  >  <li>Contact Details</li>  >  <li>Payment</li></ul>
 				<div id="miniBasket">
 				{this.state.basket.items.map(items => this.renderItemMb(items))}
 				<p id="basketTotal">Basket total: <br /> <span className="total">£{this.state.basket.total.toFixed(2)}</span></p>

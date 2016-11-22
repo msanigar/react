@@ -1,0 +1,12 @@
+#complete {
+    .half {
+        width: 50%;
+        float: left;
+        display: block;
+        min-height: 340px;
+
+        p {
+            margin-bottom: 0.1em;
+        }
+    }
+}

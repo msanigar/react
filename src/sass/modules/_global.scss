@@ -68,6 +68,11 @@ footer {
     @include spanWidth(20);
 }
 
+.title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
 .proceed {
     float: right;
     margin: 25px;
@@ -78,6 +83,7 @@ footer {
     text-decoration: none;
     min-width: 70px;
     position: relative;
+    cursor: pointer;
     &:after {
         font-family: FontAwesome;
         content: "\f054";
@@ -89,6 +95,25 @@ footer {
         color: #fff;
         background: lighten($four, 10%)
     }
+    &.back {
+        float: left;
+        padding-left: 20px;
+        &:after {
+            content: "";
+        }
+        &:before {
+            font-family: FontAwesome;
+            content: "\f053";
+            position: absolute;
+            top: 12px;
+            left: 8px;
+        }
+    }
+    &.pay {
+        &:after {
+            content: "\f023";
+        }
+    }
 }
 
 button {
@@ -99,8 +124,29 @@ button {
     border-radius: 4px;
     text-decoration: none;
     min-width: 50px;
+    cursor: pointer;
     &:hover {
         color: #fff;
         background: lighten($four, 10%)
+    }
+}
+
+ul#breadcrumbs {
+    display:flex;  
+    list-style:none;
+    font-size: 11px;
+    margin-bottom: 30px;
+    li {
+        display: inline;
+        width: auto;
+        float: left;
+        margin-left: 10px;
+        margin-right: 10px;
+        &.active {
+            font-weight: 600;
+        }
+    }
+    a {
+        text-decoration: none;
     }
 }

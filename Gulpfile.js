@@ -61,6 +61,7 @@ gulp.task("webpack-dev-server", function (callback) {
 
     new WebpackDevServer(webpack(myConfig), {
         publicPath: "/" + myConfig.output.publicPath,
+        historyApiFallback: true,
         stats: {
             colors: true
         }
