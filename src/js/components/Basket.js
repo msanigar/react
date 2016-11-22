@@ -73,13 +73,13 @@ class Basket extends Component {
 			<p>{this.state.title}</p>
 				<div id="miniBasket">
 				{this.state.basket.items.map(items => this.renderItemMb(items))}
-				<p id="basketTotal">Basket total: £{this.state.basket.total.toFixed(2)}</p>
+				<p id="basketTotal">Basket total: <br /> <span className="total">£{this.state.basket.total.toFixed(2)}</span></p>
 				</div>
 					<ul id="products">
 						{this.state.products.map(item => this.renderItem(item))}
 					</ul>
          	<br /> 
-			<Link to='contact'> Continue </Link>
+			<Link className="proceed" to='contact'> Continue </Link>
 		</div>
 	}
 

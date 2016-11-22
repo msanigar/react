@@ -67,3 +67,40 @@ footer {
 .copy {
     @include spanWidth(20);
 }
+
+.proceed {
+    float: right;
+    margin: 25px;
+    color: #fff;
+    background: $four;
+    padding: 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    min-width: 70px;
+    position: relative;
+    &:after {
+        font-family: FontAwesome;
+        content: "\f054";
+        position: absolute;
+        top: 12px;
+        right: 8px;
+    }
+    &:hover {
+        color: #fff;
+        background: lighten($four, 10%)
+    }
+}
+
+button {
+    margin: 4px 4px 4px 0;
+    color: #fff;
+    background: $four;
+    padding: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+    min-width: 50px;
+    &:hover {
+        color: #fff;
+        background: lighten($four, 10%)
+    }
+}

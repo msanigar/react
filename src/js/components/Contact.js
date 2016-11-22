@@ -61,8 +61,8 @@ class Contact extends Component {
                     </div>
                     <div id="delDetails" className="form-half right">
                         <p>Your order will be delivered to: </p>
-                        <p>{this.state.contact.fname} {this.state.contact.sname}</p>
                         <br />
+                        <p>{this.state.contact.fname} {this.state.contact.sname}</p>
                         <p>{this.state.contact.addr1}</p>
                         <p>{this.state.contact.addr2}</p>
                         <p>{this.state.contact.pcode}</p>
@@ -72,7 +72,7 @@ class Contact extends Component {
                     </div>
                 </form>
             <br />
-            <Link to='/'> Go back </Link>
+            <Link className="proceed" to='/'> Go back </Link>
         </div>
     }
 }

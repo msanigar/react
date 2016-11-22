@@ -19961,8 +19961,15 @@
 						_react2.default.createElement(
 							'p',
 							{ id: 'basketTotal' },
-							'Basket total: \xA3',
-							this.state.basket.total.toFixed(2)
+							'Basket total: ',
+							_react2.default.createElement('br', null),
+							' ',
+							_react2.default.createElement(
+								'span',
+								{ className: 'total' },
+								'\xA3',
+								this.state.basket.total.toFixed(2)
+							)
 						)
 					),
 					_react2.default.createElement(
@@ -19975,7 +19982,7 @@
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(
 						_reactRouter.Link,
-						{ to: 'contact' },
+						{ className: 'proceed', to: 'contact' },
 						' Continue '
 					)
 				);
@@ -25757,22 +25764,22 @@
 	        price: 1.99
 	    }, {
 	        sku: '002',
-	        name: 'Red Shine Pistol',
-	        img: 'build/images/p250.png',
-	        desc: 'Glorious and shiny',
-	        price: 2.59
+	        name: 'Ghost Bolt Rifle',
+	        img: 'build/images/bolt.png',
+	        desc: 'Perfect for the desert or the tundra.',
+	        price: 4.13
 	    }, {
 	        sku: '003',
-	        name: 'Red Shine Pistol',
-	        img: 'build/images/p250.png',
-	        desc: 'Glorious and shiny',
-	        price: 3.19
+	        name: 'Chieftain Shotgun',
+	        img: 'build/images/pump.png',
+	        desc: 'Guarantees you the tribe leader role. ',
+	        price: 12.29
 	    }, {
 	        sku: '004',
-	        name: 'Red Shine Pistol',
-	        img: 'build/images/p250.png',
-	        desc: 'Glorious and shiny',
-	        price: 1.54
+	        name: 'Tempered AK47',
+	        img: 'build/images/ak.png',
+	        desc: 'A tempered metal AK47',
+	        price: 28.03
 	    }],
 	    basket: {
 	        total: 0,
@@ -26896,6 +26903,7 @@
 	                            null,
 	                            'Your order will be delivered to: '
 	                        ),
+	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
@@ -26903,7 +26911,6 @@
 	                            ' ',
 	                            this.state.contact.sname
 	                        ),
-	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
@@ -26938,7 +26945,7 @@
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: '/' },
+	                    { className: 'proceed', to: '/' },
 	                    ' Go back '
 	                )
 	            );
