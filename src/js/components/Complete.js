@@ -16,18 +16,27 @@ class Complete extends Component {
         let contact = storeState.contact;
         let basket = storeState.basket;
         let payment = storeState.payment;
+        let loading = true;
         this.state = {
             products : data,
             title : title,
             contact : contact,
             basket : basket,
             payment : payment,
+            loading : loading,
             unsubscribe: store.subscribe(this.onStoreUpdated.bind(this))
         };
+
     }
 
     componentWillUnmount() {
         this.state.unsubscribe();
+    }
+
+    componentDidMount() {
+        var self = this;
+        setTimeout(() => {
+        self.setState({loading: false}); }, 2000);
     }
 
     renderItemMb(item) {
@@ -46,6 +55,12 @@ class Complete extends Component {
 	}
 
     render() {
+        if (this.state.loading) {
+        return ( 
+            <div className='my-nice-tab-container'>
+            <div className='loading-state cp-spinner cp-round'></div>
+            </div>)
+        } else {
         return <div>
             <div id="complete">
                 <p className="title">{this.state.title}</p>
@@ -53,7 +68,7 @@ class Complete extends Component {
                     <p>Thanks for your order!</p>
                     <p>Your order number is:  1128586</p>
                     <br />
-                    <p>{this.state.basket.items.map(items => this.renderItemMb(items))}</p>
+                    {this.state.basket.items.map(items => this.renderItemMb(items))}
                 </div>
                 <div className="half">
                     <p>{this.state.contact.fname} {this.state.contact.sname}</p>
@@ -62,7 +77,7 @@ class Complete extends Component {
                     <p>{this.state.contact.pcode}</p>
                     <p>{this.state.contact.city}</p>
                     <br />
-                    <p>Card number:{this.state.payment.card}</p>
+                    <p>Card number: {this.state.payment.card}</p>
                     <p>Name on card: {this.state.payment.name}</p>
                     <p>Expiration data: {this.state.payment.data}</p>
                     <p>CCV: {this.state.payment.ccv}</p>
@@ -73,6 +88,7 @@ class Complete extends Component {
 
             <Link className="proceed back" to='/'> Return </Link>
         </div>
+    }
     }
 }
 

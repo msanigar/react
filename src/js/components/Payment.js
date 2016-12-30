@@ -61,7 +61,7 @@ class Payment extends Component {
                     <div id="delDetails" className="form-half right">
                         <p>Please, for obvious reasons don't use real card details.  Validation will only accept the following:</p>
                         <br />
-                        <p>Card number: 4</p>
+                        <p>Card number: 4111111111111</p>
                         <p>Name on card: Magic Bob</p>
                         <p>Expiration data: 01/20</p>
                         <p>CCV: 123</p>

@@ -97,7 +97,7 @@
 					{ store: _store2.default },
 					_react2.default.createElement(
 							_reactRouter.Router,
-							{ history: _reactRouter.browserHistory },
+							{ history: _reactRouter.hashHistory },
 							_react2.default.createElement(_reactRouter.Route, { path: '/', component: _Basket2.default }),
 							_react2.default.createElement(_reactRouter.Route, { path: 'contact', component: _Contact2.default }),
 							_react2.default.createElement(_reactRouter.Route, { path: 'payment', component: _Payment2.default }),
@@ -25722,13 +25722,25 @@
 	};
 	
 	function updateForm(state, action) {
-	    var newState = Object.assign({}, state);
+	    // we need to make sure it's valid before we save anything
+	    if (isValid(action)) {
+	        var newState = Object.assign({}, state);
+	        var value = action.event.target.value;
+	        var field = action.event.target.getAttribute('data-contacttype');
+	
+	        newState.contact[field] = value;
+	
+	        return newState;
+	    }
+	}
+	
+	function isValid(action) {
 	    var value = action.event.target.value;
 	    var field = action.event.target.getAttribute('data-contacttype');
-	
-	    newState.contact[field] = value;
-	
-	    return newState;
+	    if (field === "fname") {
+	        console.log("true");
+	    }
+	    return true;
 	}
 	
 	function updatePay(state, action) {
@@ -27191,7 +27203,7 @@
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
-	                            'Card number: 4'
+	                            'Card number: 4111111111111'
 	                        ),
 	                        _react2.default.createElement(
 	                            'p',
@@ -27284,12 +27296,14 @@
 	            var contact = storeState.contact;
 	            var basket = storeState.basket;
 	            var payment = storeState.payment;
+	            var loading = true;
 	            this.state = {
 	                products: data,
 	                title: title,
 	                contact: contact,
 	                basket: basket,
 	                payment: payment,
+	                loading: loading,
 	                unsubscribe: _store2.default.subscribe(this.onStoreUpdated.bind(this))
 	            };
 	        }
@@ -27297,6 +27311,14 @@
 	        key: 'componentWillUnmount',
 	        value: function componentWillUnmount() {
 	            this.state.unsubscribe();
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var self = this;
+	            setTimeout(function () {
+	                self.setState({ loading: false });
+	            }, 2000);
 	        }
 	    }, {
 	        key: 'renderItemMb',
@@ -27334,108 +27356,112 @@
 	        value: function render() {
 	            var _this2 = this;
 	
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
+	            if (this.state.loading) {
+	                return _react2.default.createElement(
 	                    'div',
-	                    { id: 'complete' },
-	                    _react2.default.createElement(
-	                        'p',
-	                        { className: 'title' },
-	                        this.state.title
-	                    ),
+	                    { className: 'my-nice-tab-container' },
+	                    _react2.default.createElement('div', { className: 'loading-state cp-spinner cp-round' })
+	                );
+	            } else {
+	                return _react2.default.createElement(
+	                    'div',
+	                    null,
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'half' },
+	                        { id: 'complete' },
 	                        _react2.default.createElement(
 	                            'p',
-	                            null,
-	                            'Thanks for your order!'
+	                            { className: 'title' },
+	                            this.state.title
 	                        ),
 	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Your order number is:  1128586'
-	                        ),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
+	                            'div',
+	                            { className: 'half' },
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Thanks for your order!'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Your order number is:  1128586'
+	                            ),
+	                            _react2.default.createElement('br', null),
 	                            this.state.basket.items.map(function (items) {
 	                                return _this2.renderItemMb(items);
 	                            })
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'half' },
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                this.state.contact.fname,
+	                                ' ',
+	                                this.state.contact.sname
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                this.state.contact.addr1
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                this.state.contact.addr2
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                this.state.contact.pcode
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                this.state.contact.city
+	                            ),
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Card number: ',
+	                                this.state.payment.card
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Name on card: ',
+	                                this.state.payment.name
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Expiration data: ',
+	                                this.state.payment.data
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'CCV: ',
+	                                this.state.payment.ccv
+	                            ),
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Your delivery will be with you at some point'
+	                            )
 	                        )
 	                    ),
 	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'half' },
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            this.state.contact.fname,
-	                            ' ',
-	                            this.state.contact.sname
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            this.state.contact.addr1
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            this.state.contact.addr2
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            this.state.contact.pcode
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            this.state.contact.city
-	                        ),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Card number:',
-	                            this.state.payment.card
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Name on card: ',
-	                            this.state.payment.name
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Expiration data: ',
-	                            this.state.payment.data
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'CCV: ',
-	                            this.state.payment.ccv
-	                        ),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Your delivery will be with you at some point'
-	                        )
+	                        _reactRouter.Link,
+	                        { className: 'proceed back', to: '/' },
+	                        ' Return '
 	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _reactRouter.Link,
-	                    { className: 'proceed back', to: '/' },
-	                    ' Return '
-	                )
-	            );
+	                );
+	            }
 	        }
 	    }]);
 	

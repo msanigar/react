@@ -26,14 +26,25 @@ const mainReducer = (state = initialState, action) => {
 };
 
 function updateForm(state, action) {
-    var newState = Object.assign({}, state);
+    // we need to make sure it's valid before we save anything
+    if(isValid(action)) {
+        var newState = Object.assign({}, state);
+        var value = action.event.target.value;
+        var field = action.event.target.getAttribute('data-contacttype');
+
+        newState.contact[field] = value;
+
+        return newState;
+    }    
+}
+
+function isValid(action) {
     var value = action.event.target.value;
     var field = action.event.target.getAttribute('data-contacttype');
-
-    newState.contact[field] = value;
-
-    return newState;
-    
+    if(field === "fname") {
+        console.log("true");
+    }
+    return true;
 }
 
 function updatePay(state, action) {
