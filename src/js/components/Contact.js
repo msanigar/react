@@ -15,19 +15,20 @@ class Contact extends Component {
         let title = storeState.title;
         let contact = storeState.contact;
         let basket = storeState.basket;
+        let validation = storeState.validation.contact;
         this.state = {
             products : data,
             title : title,
             contact : contact,
             basket : basket,
-            unsubscribe: store.subscribe(this.onStoreUpdated.bind(this))
+            unsubscribe: store.subscribe(this.onStoreUpdated.bind(this)),
+            validation: validation
         };
     }
 
     componentWillUnmount() {
         this.state.unsubscribe();
     }
-
 
     onStoreUpdated() {
 		
@@ -42,6 +43,10 @@ class Contact extends Component {
 
     handleChange(event) {
         store.dispatch(actions.updateForm(event));
+    }
+
+    areAllValid(event) {
+       console.log(this.state.validation);
     }
 
     render() {

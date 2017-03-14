@@ -22,29 +22,75 @@ const mainReducer = (state = initialState, action) => {
         return updatePay(state, action);
     }
 
+    if(action.type === 'VALIDATE_FORM') {
+        return validateForm(state, action);
+    }
+
+    if(action.type === 'CHECK_VALIDATION') {
+        return checkValidation(state, action);
+    }
+
 	return state;
 };
 
 function updateForm(state, action) {
-    // we need to make sure it's valid before we save anything
-    if(isValid(action)) {
         var newState = Object.assign({}, state);
         var value = action.event.target.value;
         var field = action.event.target.getAttribute('data-contacttype');
 
+        const fnameValidation = 'Magic';
+        const snameValidation = 'Bob';
+        const emailValidation = 'magic.bob@email.com';
+        const phoneValidation = '01010 101 010';
+        const addr1Validation = '10 Spooner Street';
+        const addr2Validation = 'Quahog';
+        const pcodeValidation = '01010';
+        const cityValidation = 'Rhode Island';
+
+        switch (field) {
+            case "fname":
+                isValid("fname", fnameValidation, value)
+            case "sname":
+                isValid("sname", snameValidation, value)
+            case "email":
+                isValid("email", emailValidation, value)
+            case "phone":
+                isValid("phone", phoneValidation, value)
+            case "addr1":
+                isValid("addr1", addr1Validation, value)
+            case "addr2":
+                isValid("addr2", addr2Validation, value)
+            case "pcode":
+                isValid("pcode", pcodeValidation, value)
+            case "city":
+                isValid("city", cityValidation, value)
+        }
+
+        function isValid(fieldType, validationType, value) {
+            if (value === validationType) {
+                newState.validation.contact[fieldType] = true;
+            } else {
+                newState.validation.contact[fieldType] = false;
+            }
+        }       
+
         newState.contact[field] = value;
 
-        return newState;
-    }    
+        return newState;  
 }
 
-function isValid(action) {
-    var value = action.event.target.value;
-    var field = action.event.target.getAttribute('data-contacttype');
-    if(field === "fname") {
-        console.log("true");
-    }
-    return true;
+function checkValidation(state, action) {
+     const validationFields = state.validation.contact;
+        function allTrue(obj) {
+            for(var o in obj)
+                if(!obj[o]) return false;
+            return true;
+        }
+        if(allTrue(validationFields)) {
+            console.log("validation: passed!", action);
+        } else {
+            console.log("validation: failed!", action);
+        }
 }
 
 function updatePay(state, action) {
@@ -153,7 +199,10 @@ const initialState = {
         items: []
     },
     contact : {},
-    payment : {}
+    payment : {},
+    validation : {
+        contact : {}
+    }
 };
 
 let store;
