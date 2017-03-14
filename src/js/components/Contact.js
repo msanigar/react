@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, browserHistory } from 'react-router'
+import { Link, browserHistory, hashHistory } from 'react-router'
 import store from '../store'
 import * as actions from '../actions'
 
@@ -45,8 +45,22 @@ class Contact extends Component {
         store.dispatch(actions.updateForm(event));
     }
 
-    areAllValid(event) {
-       console.log(this.state.validation);
+    validateContact(event) {
+        event.preventDefault()
+        let storeState = store.getState();
+		let validation = storeState.validation.contact;
+
+        function validateFields(obj) {
+            for(var o in obj)
+                if(!obj[o] === true) return false;
+            return true;
+        }
+
+        if(validateFields(validation)) {
+            hashHistory.push('/payment');
+        } else {
+            alert("Please enter correct contact details!!");
+        }
     }
 
     render() {
@@ -66,20 +80,24 @@ class Contact extends Component {
                         City: <input type="text" data-contacttype="city" value={this.state.contact.city} onChange={this.handleChange} />
                     </div>
                     <div id="delDetails" className="form-half right">
+                        <p>Please use the following contact details:</p>
+                        <p>Name: Magic Bob</p>
+                        <p>Email: magic.bob@email.com</p>
+                        <p>Phone: 01010 101 010</p>
+                        <p>Address: 10 Spooner Street, Quahog, 01010, Rhode Island</p>
+                        <br />
                         <p>Your order will be delivered to: </p>
                         <br />
                         <p>{this.state.contact.fname} {this.state.contact.sname}</p>
-                        <p>{this.state.contact.addr1}</p>
-                        <p>{this.state.contact.addr2}</p>
-                        <p>{this.state.contact.pcode}</p>
-                        <p>{this.state.contact.city}</p>
+                        <p>{this.state.contact.addr1} {this.state.contact.addr2}</p>
+                        <p>{this.state.contact.city} {this.state.contact.pcode}</p>
                         <br />
-                        <p>If we need to get in touch, we'll contact you at: {this.state.contact.phone} & {this.state.contact.email}</p>
+                        <p>If we need to get in touch, we'll contact you at: {this.state.contact.phone} or {this.state.contact.email}</p>
                     </div>
                 </form>
             <br />
             <Link className="proceed back" to='/'> Go back </Link>
-            <Link className="proceed" to='payment'> Continue </Link>
+            <button className="proceed" onClick={this.validateContact}> Continue </button>
         </div>
     }
 }

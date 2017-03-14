@@ -15,10 +15,12 @@ class Basket extends Component {
 		let data = storeState.products;
 		let title = storeState.title;
 		let basket = storeState.basket;
+		let validation = storeState.validation.basket;
 		this.state = {
 			products : data,
 			basket : basket,
 			title : title,
+			validation: validation,
 			unsubscribe: store.subscribe(this.onStoreUpdated.bind(this))
 		};
 	}
@@ -33,11 +35,13 @@ class Basket extends Component {
 		let data = storeState.products;
 		let title = storeState.title;
 		let basket = storeState.basket;
+		let validation = storeState.validation.basket;
 		
 		this.setState({
 			products : data,
 			basket : basket,
-			title : title
+			title : title,
+			validation : validation
 		});
 
 	}
@@ -70,9 +74,11 @@ class Basket extends Component {
 	}
 
 	validateBasket(event) {
-		let basketQty = event.target.getAttribute('data-items');
+
+		let storeState = store.getState();
+		let validation = storeState.validation.basket;
 		
-		if(basketQty > 0) {
+		if(validation) {
 			hashHistory.push('/contact');
 		} else {
 			alert("Please add a product to your basket before proceeding!")
@@ -92,7 +98,7 @@ class Basket extends Component {
 						{this.state.products.map(item => this.renderItem(item))}
 					</ul>
          	<br /> 
-			<button className="proceed" data-items={basketItems.length} onClick={this.validateBasket}> Continue </button>
+			<button className="proceed" onClick={this.validateBasket}> Continue </button>
 		</div>
 	}
 

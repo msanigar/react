@@ -26,8 +26,8 @@ const mainReducer = (state = initialState, action) => {
         return validateForm(state, action);
     }
 
-    if(action.type === 'CHECK_VALIDATION') {
-        return checkValidation(state, action);
+    if(action.type === 'CLEAR_BASKET') {
+        return clearBasket(state, action);
     }
 
 	return state;
@@ -49,24 +49,24 @@ function updateForm(state, action) {
 
         switch (field) {
             case "fname":
-                isValid("fname", fnameValidation, value)
+                isValidContact("fname", fnameValidation, value)
             case "sname":
-                isValid("sname", snameValidation, value)
+                isValidContact("sname", snameValidation, value)
             case "email":
-                isValid("email", emailValidation, value)
+                isValidContact("email", emailValidation, value)
             case "phone":
-                isValid("phone", phoneValidation, value)
+                isValidContact("phone", phoneValidation, value)
             case "addr1":
-                isValid("addr1", addr1Validation, value)
+                isValidContact("addr1", addr1Validation, value)
             case "addr2":
-                isValid("addr2", addr2Validation, value)
+                isValidContact("addr2", addr2Validation, value)
             case "pcode":
-                isValid("pcode", pcodeValidation, value)
+                isValidContact("pcode", pcodeValidation, value)
             case "city":
-                isValid("city", cityValidation, value)
+                isValidContact("city", cityValidation, value)
         }
 
-        function isValid(fieldType, validationType, value) {
+        function isValidContact(fieldType, validationType, value) {
             if (value === validationType) {
                 newState.validation.contact[fieldType] = true;
             } else {
@@ -79,24 +79,34 @@ function updateForm(state, action) {
         return newState;  
 }
 
-function checkValidation(state, action) {
-     const validationFields = state.validation.contact;
-        function allTrue(obj) {
-            for(var o in obj)
-                if(!obj[o]) return false;
-            return true;
-        }
-        if(allTrue(validationFields)) {
-            console.log("validation: passed!", action);
-        } else {
-            console.log("validation: failed!", action);
-        }
-}
-
 function updatePay(state, action) {
     var newState = Object.assign({}, state);
     var value = action.event.target.value;
     var field = action.event.target.getAttribute('data-paymenttype');
+
+    const cardValidation = '4111111111111';
+    const cardName = 'Magic Bob';
+    const cardExpiry = '01/20';
+    const cardCcv = '123';
+
+    switch (field) {
+        case "card":
+            isValidPayment("card", cardValidation, value)
+        case "name":
+            isValidPayment("name", cardName, value)
+        case "date":
+            isValidPayment("date", cardExpiry, value)
+        case "ccv":
+            isValidPayment("ccv", cardCcv, value)
+    }
+
+    function isValidPayment(fieldType, validationType, value) {
+        if (value === validationType) {
+            newState.validation.payment[fieldType] = true;
+        } else {
+            newState.validation.payment[fieldType] = false;
+        }
+    } 
 
     newState.payment[field] = value;
 
@@ -107,6 +117,7 @@ function updatePay(state, action) {
 function addToBasket(state, action) {
     var newState = Object.assign({}, state);
     var existingItem = returnExistingItemFromBasket(newState, action.item.sku);
+    var basketItems = state.basket.items;
     
     if (existingItem) {
         existingItem.qty++;
@@ -119,6 +130,11 @@ function addToBasket(state, action) {
         });
     }
 
+    if(basketItems.length > 0) {
+        newState.validation.basket = true;
+    } else {
+        newState.validation.basket = false;
+    }
     newState.basket.total = calculatePrice(newState);
 
     return newState;
@@ -127,6 +143,7 @@ function addToBasket(state, action) {
 function removeFromBasket(state, action) {
     var newState = Object.assign({}, state);
     let existingItem = returnExistingItemFromBasket(newState, action.item.sku);
+    var basketItems = state.basket.items;
     
     if (existingItem) {
         if (existingItem.qty > 1) {
@@ -139,6 +156,12 @@ function removeFromBasket(state, action) {
         }
 
         newState.basket.total = calculatePrice(newState);
+    }
+
+    if(basketItems.length > 0) {
+        newState.validation.basket = true;
+    } else {
+        newState.validation.basket = false;
     }
 
     return newState;
@@ -160,6 +183,13 @@ function calculatePrice(state) {
         total += item.price * item.qty;
     }
     return total
+}
+
+function clearBasket(state) {
+    var newState = Object.assign({}, state);
+    newState.basket.items = [];
+    newState.basket.total = 0;
+    return newState;
 }
 
 const initialState = {
@@ -201,7 +231,13 @@ const initialState = {
     contact : {},
     payment : {},
     validation : {
-        contact : {}
+        basket : false,
+        contact : {
+            fname: false
+        },
+        payment : {
+            card: false
+        }
     }
 };
 

@@ -37,6 +37,9 @@ class Complete extends Component {
         var self = this;
         setTimeout(() => {
         self.setState({loading: false}); }, 2000);
+        setTimeout(() => {
+            store.dispatch(actions.clearBasket());
+        }, 3000);
     }
 
     renderItemMb(item) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, browserHistory } from 'react-router'
+import { Link, browserHistory, hashHistory } from 'react-router'
 import store from '../store'
 import * as actions from '../actions'
 
@@ -16,12 +16,14 @@ class Payment extends Component {
         let contact = storeState.contact;
         let basket = storeState.basket;
         let payment = storeState.payment;
+        let validation = storeState.validation.payment;
         this.state = {
             products : data,
             title : title,
             contact : contact,
             basket : basket,
             payment : payment,
+            validation : validation,
             unsubscribe: store.subscribe(this.onStoreUpdated.bind(this))
         };
     }
@@ -44,6 +46,24 @@ class Payment extends Component {
 
     handleChangePay(event) {
         store.dispatch(actions.updatePay(event));
+    }
+
+    validatePayment(event) {
+        event.preventDefault()
+        let storeState = store.getState();
+		let validation = storeState.validation.payment;
+
+        function validateFields(obj) {
+            for(var o in obj)
+                if(!obj[o]) return false;
+            return true;
+        }
+
+        if(validateFields(validation)) {
+            hashHistory.push('/complete');
+        } else {
+            alert("Please enter correct payment details!!");
+        }
     }
 
     render() {
@@ -69,7 +89,7 @@ class Payment extends Component {
                 </form>
             <br />
             <Link className="proceed back" to='contact'> Go back </Link>
-            <Link className="proceed pay" to='complete'> Pay Now </Link>
+            <button className="proceed" onClick={this.validatePayment}> Continue </button>
         </div>
     }
 }

@@ -19852,10 +19852,12 @@
 				var data = storeState.products;
 				var title = storeState.title;
 				var basket = storeState.basket;
+				var validation = storeState.validation.basket;
 				this.state = {
 					products: data,
 					basket: basket,
 					title: title,
+					validation: validation,
 					unsubscribe: _store2.default.subscribe(this.onStoreUpdated.bind(this))
 				};
 			}
@@ -19872,11 +19874,13 @@
 				var data = storeState.products;
 				var title = storeState.title;
 				var basket = storeState.basket;
+				var validation = storeState.validation.basket;
 	
 				this.setState({
 					products: data,
 					basket: basket,
-					title: title
+					title: title,
+					validation: validation
 				});
 			}
 		}, {
@@ -19952,10 +19956,11 @@
 		}, {
 			key: 'validateBasket',
 			value: function validateBasket(event) {
-				var basketQty = event.target.getAttribute('data-items');
-				event.preventDefault();
-				console.log(basketQty);
-				if (basketQty > 0) {
+	
+				var storeState = _store2.default.getState();
+				var validation = storeState.validation.basket;
+	
+				if (validation) {
 					_reactRouter.hashHistory.push('/contact');
 				} else {
 					alert("Please add a product to your basket before proceeding!");
@@ -20026,7 +20031,7 @@
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(
 						'button',
-						{ className: 'proceed', 'data-items': basketItems.length, onClick: this.validateBasket },
+						{ className: 'proceed', onClick: this.validateBasket },
 						' Continue '
 					)
 				);
@@ -25735,8 +25740,8 @@
 	        return validateForm(state, action);
 	    }
 	
-	    if (action.type === 'CHECK_VALIDATION') {
-	        return checkValidation(state, action);
+	    if (action.type === 'CLEAR_BASKET') {
+	        return clearBasket(state, action);
 	    }
 	
 	    return state;
@@ -25758,24 +25763,24 @@
 	
 	    switch (field) {
 	        case "fname":
-	            isValid("fname", fnameValidation, value);
+	            isValidContact("fname", fnameValidation, value);
 	        case "sname":
-	            isValid("sname", snameValidation, value);
+	            isValidContact("sname", snameValidation, value);
 	        case "email":
-	            isValid("email", emailValidation, value);
+	            isValidContact("email", emailValidation, value);
 	        case "phone":
-	            isValid("phone", phoneValidation, value);
+	            isValidContact("phone", phoneValidation, value);
 	        case "addr1":
-	            isValid("addr1", addr1Validation, value);
+	            isValidContact("addr1", addr1Validation, value);
 	        case "addr2":
-	            isValid("addr2", addr2Validation, value);
+	            isValidContact("addr2", addr2Validation, value);
 	        case "pcode":
-	            isValid("pcode", pcodeValidation, value);
+	            isValidContact("pcode", pcodeValidation, value);
 	        case "city":
-	            isValid("city", cityValidation, value);
+	            isValidContact("city", cityValidation, value);
 	    }
 	
-	    function isValid(fieldType, validationType, value) {
+	    function isValidContact(fieldType, validationType, value) {
 	        if (value === validationType) {
 	            newState.validation.contact[fieldType] = true;
 	        } else {
@@ -25788,24 +25793,34 @@
 	    return newState;
 	}
 	
-	function checkValidation(state, action) {
-	    var validationFields = state.validation.contact;
-	    function allTrue(obj) {
-	        for (var o in obj) {
-	            if (!obj[o]) return false;
-	        }return true;
-	    }
-	    if (allTrue(validationFields)) {
-	        console.log("validation: passed!", action);
-	    } else {
-	        console.log("validation: failed!", action);
-	    }
-	}
-	
 	function updatePay(state, action) {
 	    var newState = Object.assign({}, state);
 	    var value = action.event.target.value;
 	    var field = action.event.target.getAttribute('data-paymenttype');
+	
+	    var cardValidation = '4111111111111';
+	    var cardName = 'Magic Bob';
+	    var cardExpiry = '01/20';
+	    var cardCcv = '123';
+	
+	    switch (field) {
+	        case "card":
+	            isValidPayment("card", cardValidation, value);
+	        case "name":
+	            isValidPayment("name", cardName, value);
+	        case "date":
+	            isValidPayment("date", cardExpiry, value);
+	        case "ccv":
+	            isValidPayment("ccv", cardCcv, value);
+	    }
+	
+	    function isValidPayment(fieldType, validationType, value) {
+	        if (value === validationType) {
+	            newState.validation.payment[fieldType] = true;
+	        } else {
+	            newState.validation.payment[fieldType] = false;
+	        }
+	    }
 	
 	    newState.payment[field] = value;
 	
@@ -25815,6 +25830,7 @@
 	function addToBasket(state, action) {
 	    var newState = Object.assign({}, state);
 	    var existingItem = returnExistingItemFromBasket(newState, action.item.sku);
+	    var basketItems = state.basket.items;
 	
 	    if (existingItem) {
 	        existingItem.qty++;
@@ -25827,6 +25843,11 @@
 	        });
 	    }
 	
+	    if (basketItems.length > 0) {
+	        newState.validation.basket = true;
+	    } else {
+	        newState.validation.basket = false;
+	    }
 	    newState.basket.total = calculatePrice(newState);
 	
 	    return newState;
@@ -25835,6 +25856,7 @@
 	function removeFromBasket(state, action) {
 	    var newState = Object.assign({}, state);
 	    var existingItem = returnExistingItemFromBasket(newState, action.item.sku);
+	    var basketItems = state.basket.items;
 	
 	    if (existingItem) {
 	        if (existingItem.qty > 1) {
@@ -25847,6 +25869,12 @@
 	        }
 	
 	        newState.basket.total = calculatePrice(newState);
+	    }
+	
+	    if (basketItems.length > 0) {
+	        newState.validation.basket = true;
+	    } else {
+	        newState.validation.basket = false;
 	    }
 	
 	    return newState;
@@ -25868,6 +25896,13 @@
 	        total += item.price * item.qty;
 	    }
 	    return total;
+	}
+	
+	function clearBasket(state) {
+	    var newState = Object.assign({}, state);
+	    newState.basket.items = [];
+	    newState.basket.total = 0;
+	    return newState;
 	}
 	
 	var initialState = {
@@ -25904,7 +25939,13 @@
 	    contact: {},
 	    payment: {},
 	    validation: {
-	        contact: {}
+	        basket: false,
+	        contact: {
+	            fname: false
+	        },
+	        payment: {
+	            card: false
+	        }
 	    }
 	};
 	
@@ -26871,13 +26912,13 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.CHECK_VALIDATION = exports.VALIDATE_FORM = exports.UPDATE_PAY = exports.UPDATE_FORM = exports.REMOVE_FROM_BASKET = exports.ADD_TO_BASKET = undefined;
+	exports.CLEAR_BASKET = exports.VALIDATE_FORM = exports.UPDATE_PAY = exports.UPDATE_FORM = exports.REMOVE_FROM_BASKET = exports.ADD_TO_BASKET = undefined;
 	exports.addToBasket = addToBasket;
 	exports.removeFromBasket = removeFromBasket;
 	exports.updateForm = updateForm;
 	exports.updatePay = updatePay;
 	exports.validateForm = validateForm;
-	exports.checkValidation = checkValidation;
+	exports.clearBasket = clearBasket;
 	
 	var _store = __webpack_require__(224);
 	
@@ -26890,7 +26931,7 @@
 	var UPDATE_FORM = exports.UPDATE_FORM = "UPDATE_FORM";
 	var UPDATE_PAY = exports.UPDATE_PAY = "UPDATE_PAY";
 	var VALIDATE_FORM = exports.VALIDATE_FORM = "VALIDATE_FORM";
-	var CHECK_VALIDATION = exports.CHECK_VALIDATION = "CHECK_VALIDATION";
+	var CLEAR_BASKET = exports.CLEAR_BASKET = "CLEAR_BASKET";
 	
 	function addToBasket(item) {
 	    return { type: ADD_TO_BASKET, item: item };
@@ -26912,8 +26953,8 @@
 	    return { type: VALIDATE_FORM, event: event };
 	}
 	
-	function checkValidation(event) {
-	    return { type: CHECK_VALIDATION, event: event };
+	function clearBasket() {
+	    return { type: CLEAR_BASKET };
 	}
 
 /***/ },
@@ -27001,9 +27042,23 @@
 	            _store2.default.dispatch(actions.updateForm(event));
 	        }
 	    }, {
-	        key: 'areAllValid',
-	        value: function areAllValid(event) {
-	            console.log(this.state.validation);
+	        key: 'validateContact',
+	        value: function validateContact(event) {
+	            event.preventDefault();
+	            var storeState = _store2.default.getState();
+	            var validation = storeState.validation.contact;
+	
+	            function validateFields(obj) {
+	                for (var o in obj) {
+	                    if (!obj[o] === true) return false;
+	                }return true;
+	            }
+	
+	            if (validateFields(validation)) {
+	                _reactRouter.hashHistory.push('/payment');
+	            } else {
+	                alert("Please enter correct contact details!!");
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -27071,6 +27126,32 @@
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
+	                            'Please use the following contact details:'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Name: Magic Bob'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Email: magic.bob@email.com'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Phone: 01010 101 010'
+	                        ),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Address: 10 Spooner Street, Quahog, 01010, Rhode Island'
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
 	                            'Your order will be delivered to: '
 	                        ),
 	                        _react2.default.createElement('br', null),
@@ -27084,22 +27165,16 @@
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
-	                            this.state.contact.addr1
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
+	                            this.state.contact.addr1,
+	                            ' ',
 	                            this.state.contact.addr2
 	                        ),
 	                        _react2.default.createElement(
 	                            'p',
 	                            null,
+	                            this.state.contact.city,
+	                            ' ',
 	                            this.state.contact.pcode
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            this.state.contact.city
 	                        ),
 	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
@@ -27107,7 +27182,7 @@
 	                            null,
 	                            'If we need to get in touch, we\'ll contact you at: ',
 	                            this.state.contact.phone,
-	                            ' & ',
+	                            ' or ',
 	                            this.state.contact.email
 	                        )
 	                    )
@@ -27119,8 +27194,8 @@
 	                    ' Go back '
 	                ),
 	                _react2.default.createElement(
-	                    _reactRouter.Link,
-	                    { className: 'proceed', to: 'payment' },
+	                    'button',
+	                    { className: 'proceed', onClick: this.validateContact },
 	                    ' Continue '
 	                )
 	            );
@@ -27186,12 +27261,14 @@
 	            var contact = storeState.contact;
 	            var basket = storeState.basket;
 	            var payment = storeState.payment;
+	            var validation = storeState.validation.payment;
 	            this.state = {
 	                products: data,
 	                title: title,
 	                contact: contact,
 	                basket: basket,
 	                payment: payment,
+	                validation: validation,
 	                unsubscribe: _store2.default.subscribe(this.onStoreUpdated.bind(this))
 	            };
 	        }
@@ -27215,6 +27292,25 @@
 	        key: 'handleChangePay',
 	        value: function handleChangePay(event) {
 	            _store2.default.dispatch(actions.updatePay(event));
+	        }
+	    }, {
+	        key: 'validatePayment',
+	        value: function validatePayment(event) {
+	            event.preventDefault();
+	            var storeState = _store2.default.getState();
+	            var validation = storeState.validation.payment;
+	
+	            function validateFields(obj) {
+	                for (var o in obj) {
+	                    if (!obj[o]) return false;
+	                }return true;
+	            }
+	
+	            if (validateFields(validation)) {
+	                _reactRouter.hashHistory.push('/complete');
+	            } else {
+	                alert("Please enter correct payment details!!");
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -27310,9 +27406,9 @@
 	                    ' Go back '
 	                ),
 	                _react2.default.createElement(
-	                    _reactRouter.Link,
-	                    { className: 'proceed pay', to: 'complete' },
-	                    ' Pay Now '
+	                    'button',
+	                    { className: 'proceed', onClick: this.validatePayment },
+	                    ' Continue '
 	                )
 	            );
 	        }
@@ -27400,6 +27496,9 @@
 	            setTimeout(function () {
 	                self.setState({ loading: false });
 	            }, 2000);
+	            setTimeout(function () {
+	                _store2.default.dispatch(actions.clearBasket());
+	            }, 3000);
 	        }
 	    }, {
 	        key: 'renderItemMb',
