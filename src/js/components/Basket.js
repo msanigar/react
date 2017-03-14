@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
+import { Link, hashHistory } from 'react-router'
 import store from '../store'
 import * as actions from '../actions'
 
@@ -7,6 +7,7 @@ class Basket extends Component {
 
 	constructor(props) {
 		super(props);
+
 	}
 
 	componentWillMount() {
@@ -68,7 +69,16 @@ class Basket extends Component {
 		store.dispatch(actions.removeFromBasket(item));
 	}
 
+	validateBasket(event) {
+		if(basketQty > 0) {
+			hashHistory.push('/contact');
+		} else {
+			alert("Please add a product to your basket before proceeding!")
+		}
+	}
+
 	render() {
+		let basketItems = this.state.basket.items;
 		return <div>
 			<p className="title">{this.state.title}</p>
 			<ul id="breadcrumbs"><li className="active">Basket</li>  >  <li>Contact Details</li>  >  <li>Payment</li></ul>
@@ -80,7 +90,7 @@ class Basket extends Component {
 						{this.state.products.map(item => this.renderItem(item))}
 					</ul>
          	<br /> 
-			<Link className="proceed" to='contact'> Continue </Link>
+			<button className="proceed" data-items={basketItems.length} onClick={this.validateBasket}> Continue </button>
 		</div>
 	}
 

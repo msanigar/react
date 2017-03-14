@@ -81,9 +81,10 @@ footer {
     padding: 10px;
     border-radius: 4px;
     text-decoration: none;
-    min-width: 70px;
+    min-width: 100px;
     position: relative;
     cursor: pointer;
+    text-align: left;
     &:after {
         font-family: FontAwesome;
         content: "\f054";
