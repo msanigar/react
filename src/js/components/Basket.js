@@ -70,6 +70,8 @@ class Basket extends Component {
 	}
 
 	validateBasket(event) {
+		let basketQty = event.target.getAttribute('data-items');
+		
 		if(basketQty > 0) {
 			hashHistory.push('/contact');
 		} else {
