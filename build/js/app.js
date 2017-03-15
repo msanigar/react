@@ -63,27 +63,27 @@
 	
 	var _Basket2 = _interopRequireDefault(_Basket);
 	
-	var _Contact = __webpack_require__(243);
+	var _Contact = __webpack_require__(244);
 	
 	var _Contact2 = _interopRequireDefault(_Contact);
 	
-	var _Payment = __webpack_require__(244);
+	var _Payment = __webpack_require__(245);
 	
 	var _Payment2 = _interopRequireDefault(_Payment);
 	
-	var _Complete = __webpack_require__(245);
+	var _Complete = __webpack_require__(246);
 	
 	var _Complete2 = _interopRequireDefault(_Complete);
 	
 	var _reactRouter = __webpack_require__(161);
 	
-	var _reactRedux = __webpack_require__(246);
+	var _reactRedux = __webpack_require__(247);
 	
 	var _store = __webpack_require__(224);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _reactAddonsCssTransitionGroup = __webpack_require__(253);
+	var _reactAddonsCssTransitionGroup = __webpack_require__(254);
 	
 	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 	
@@ -19822,7 +19822,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(242);
+	var _actions = __webpack_require__(243);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -25751,6 +25751,8 @@
 	    var newState = Object.assign({}, state);
 	    var value = action.event.target.value;
 	    var field = action.event.target.getAttribute('data-contacttype');
+	    var required = action.event.target.getAttribute('data-required') ? true : false;
+	    var elm = action.event.target;
 	
 	    var fnameValidation = 'Magic';
 	    var snameValidation = 'Bob';
@@ -25763,28 +25765,46 @@
 	
 	    switch (field) {
 	        case "fname":
-	            isValidContact("fname", fnameValidation, value);
+	            isValidContact("fname", fnameValidation, value, required, elm);
+	            break;
 	        case "sname":
-	            isValidContact("sname", snameValidation, value);
+	            isValidContact("sname", snameValidation, value, required, elm);
+	            break;
 	        case "email":
-	            isValidContact("email", emailValidation, value);
+	            isValidContact("email", emailValidation, value, required, elm);
+	            break;
 	        case "phone":
-	            isValidContact("phone", phoneValidation, value);
+	            isValidContact("phone", phoneValidation, value, required, elm);
+	            break;
 	        case "addr1":
-	            isValidContact("addr1", addr1Validation, value);
+	            isValidContact("addr1", addr1Validation, value, required, elm);
+	            break;
 	        case "addr2":
-	            isValidContact("addr2", addr2Validation, value);
+	            isValidContact("addr2", addr2Validation, value, required, elm);
+	            break;
 	        case "pcode":
-	            isValidContact("pcode", pcodeValidation, value);
+	            isValidContact("pcode", pcodeValidation, value, required, elm);
+	            break;
 	        case "city":
-	            isValidContact("city", cityValidation, value);
+	            isValidContact("city", cityValidation, value, required, elm);
+	            break;
 	    }
 	
-	    function isValidContact(fieldType, validationType, value) {
+	    function isValidContact(fieldType, validationType, value, required, elm) {
 	        if (value === validationType) {
 	            newState.validation.contact[fieldType] = true;
 	        } else {
 	            newState.validation.contact[fieldType] = false;
+	        }
+	        if (required) {
+	            var needsError = value ? false : true;
+	            var hasError = hasClass(elm, "error");
+	
+	            if (needsError && !hasError) {
+	                addClass(elm, "error");
+	            } else if (!needsError && hasError) {
+	                removeClass(elm, "error");
+	            }
 	        }
 	    }
 	
@@ -25903,6 +25923,39 @@
 	    newState.basket.items = [];
 	    newState.basket.total = 0;
 	    return newState;
+	}
+	
+	// utils - need moving out
+	
+	function addClass(el, className) {
+	    if (el.classList) {
+	        el.classList.add(className);
+	    } else {
+	        if (!this.hasClass(el, className)) {
+	            el.className += className + ' ';
+	        }
+	    }
+	}
+	
+	function removeClass(el, className) {
+	    if (!el instanceof HTMLElement && typeof className !== 'string') {
+	        throw new Error('The element passed in to removeClass is not a valid HTML element');
+	    }
+	
+	    if (el.classList) {
+	        el.classList.remove(className);
+	    } else {
+	        console.log("%cNo classes on this element.", "color:green; background-color:yellow");
+	    }
+	}
+	
+	function hasClass(el, className) {
+	    if (el.classList) {
+	        return el.classList.contains(className);
+	    } else {
+	        var r = new RegExp('(?:\\s|^)' + className + '(?:\\s|$)');
+	        return r.test(el.className);
+	    }
 	}
 	
 	var initialState = {
@@ -26904,7 +26957,8 @@
 	};
 
 /***/ },
-/* 242 */
+/* 242 */,
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26958,7 +27012,7 @@
 	}
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26979,7 +27033,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(242);
+	var _actions = __webpack_require__(243);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -27104,19 +27158,19 @@
 	                        'div',
 	                        { className: 'form-half left' },
 	                        'Forename: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'fname', value: this.state.contact.fname, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'fname', 'data-required': 'true', value: this.state.contact.fname, onChange: this.handleChange }),
 	                        'Surname: ',
 	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'sname', value: this.state.contact.sname, onChange: this.handleChange }),
 	                        'Email: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'email', value: this.state.contact.email, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'email', 'data-required': 'true', value: this.state.contact.email, onChange: this.handleChange }),
 	                        'Phone: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'phone', value: this.state.contact.phone, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'phone', 'data-required': 'true', value: this.state.contact.phone, onChange: this.handleChange }),
 	                        'Address line 1: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr1', value: this.state.contact.addr1, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr1', 'data-required': 'true', value: this.state.contact.addr1, onChange: this.handleChange }),
 	                        'Address line 2: ',
 	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr2', value: this.state.contact.addr2, onChange: this.handleChange }),
 	                        'Postcode: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'pcode', value: this.state.contact.pcode, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'pcode', 'data-required': 'true', value: this.state.contact.pcode, onChange: this.handleChange }),
 	                        'City: ',
 	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'city', value: this.state.contact.city, onChange: this.handleChange })
 	                    ),
@@ -27208,7 +27262,7 @@
 	exports.default = Contact;
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27229,7 +27283,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(242);
+	var _actions = __webpack_require__(243);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -27420,7 +27474,7 @@
 	exports.default = Payment;
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27441,7 +27495,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(242);
+	var _actions = __webpack_require__(243);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -27651,7 +27705,7 @@
 	exports.default = Complete;
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27659,11 +27713,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(247);
+	var _Provider = __webpack_require__(248);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connect = __webpack_require__(250);
+	var _connect = __webpack_require__(251);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -27673,7 +27727,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27683,11 +27737,11 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(248);
+	var _storeShape = __webpack_require__(249);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _warning = __webpack_require__(249);
+	var _warning = __webpack_require__(250);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -27757,7 +27811,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27773,7 +27827,7 @@
 	});
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27803,7 +27857,7 @@
 	}
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27816,19 +27870,19 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(248);
+	var _storeShape = __webpack_require__(249);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _shallowEqual = __webpack_require__(251);
+	var _shallowEqual = __webpack_require__(252);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _wrapActionCreators = __webpack_require__(252);
+	var _wrapActionCreators = __webpack_require__(253);
 	
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 	
-	var _warning = __webpack_require__(249);
+	var _warning = __webpack_require__(250);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -28204,7 +28258,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28235,7 +28289,7 @@
 	}
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28252,13 +28306,13 @@
 	}
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(254);
+	module.exports = __webpack_require__(255);
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28279,8 +28333,8 @@
 	
 	var assign = __webpack_require__(40);
 	
-	var ReactTransitionGroup = __webpack_require__(255);
-	var ReactCSSTransitionGroupChild = __webpack_require__(257);
+	var ReactTransitionGroup = __webpack_require__(256);
+	var ReactCSSTransitionGroupChild = __webpack_require__(258);
 	
 	function createTransitionTimeoutPropValidator(transitionType) {
 	  var timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -28346,7 +28400,7 @@
 	module.exports = ReactCSSTransitionGroup;
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28363,7 +28417,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var ReactTransitionChildMapping = __webpack_require__(256);
+	var ReactTransitionChildMapping = __webpack_require__(257);
 	
 	var assign = __webpack_require__(40);
 	var emptyFunction = __webpack_require__(16);
@@ -28556,7 +28610,7 @@
 	module.exports = ReactTransitionGroup;
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28659,7 +28713,7 @@
 	module.exports = ReactTransitionChildMapping;
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28679,8 +28733,8 @@
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(4);
 	
-	var CSSCore = __webpack_require__(258);
-	var ReactTransitionEvents = __webpack_require__(259);
+	var CSSCore = __webpack_require__(259);
+	var ReactTransitionEvents = __webpack_require__(260);
 	
 	var onlyChild = __webpack_require__(157);
 	
@@ -28829,7 +28883,7 @@
 	module.exports = ReactCSSTransitionGroupChild;
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28932,7 +28986,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**

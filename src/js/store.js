@@ -2,8 +2,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { loadState, saveState } from './localStorage';
 
-
-
 const mainReducer = (state = initialState, action) => {
     
     if(action.type === 'ADD_TO_BASKET') {
@@ -37,6 +35,8 @@ function updateForm(state, action) {
         var newState = Object.assign({}, state);
         var value = action.event.target.value;
         var field = action.event.target.getAttribute('data-contacttype');
+        var required = action.event.target.getAttribute('data-required') ? true : false;
+        var elm = action.event.target;
 
         const fnameValidation = 'Magic';
         const snameValidation = 'Bob';
@@ -49,28 +49,46 @@ function updateForm(state, action) {
 
         switch (field) {
             case "fname":
-                isValidContact("fname", fnameValidation, value)
+                isValidContact("fname", fnameValidation, value, required, elm)
+                break;
             case "sname":
-                isValidContact("sname", snameValidation, value)
+                isValidContact("sname", snameValidation, value, required, elm)
+                break;
             case "email":
-                isValidContact("email", emailValidation, value)
+                isValidContact("email", emailValidation, value, required, elm)
+                break;
             case "phone":
-                isValidContact("phone", phoneValidation, value)
+                isValidContact("phone", phoneValidation, value, required, elm)
+                break;
             case "addr1":
-                isValidContact("addr1", addr1Validation, value)
+                isValidContact("addr1", addr1Validation, value, required, elm)
+                break;
             case "addr2":
-                isValidContact("addr2", addr2Validation, value)
+                isValidContact("addr2", addr2Validation, value, required, elm)
+                break;
             case "pcode":
-                isValidContact("pcode", pcodeValidation, value)
+                isValidContact("pcode", pcodeValidation, value, required, elm)
+                break;
             case "city":
-                isValidContact("city", cityValidation, value)
+                isValidContact("city", cityValidation, value, required, elm)
+                break;
         }
 
-        function isValidContact(fieldType, validationType, value) {
+        function isValidContact(fieldType, validationType, value, required, elm) {
             if (value === validationType) {
                 newState.validation.contact[fieldType] = true;
             } else {
                 newState.validation.contact[fieldType] = false;
+            }
+            if(required) {
+                var needsError = value ? false : true;
+                var hasError = hasClass(elm, "error");
+
+                if(needsError && !hasError) {
+                    addClass(elm, "error");
+                } else if (!needsError && hasError) {
+                    removeClass(elm, "error");
+                }
             }
         }       
 
@@ -190,6 +208,39 @@ function clearBasket(state) {
     newState.basket.items = [];
     newState.basket.total = 0;
     return newState;
+}
+
+// utils - need moving out
+
+function addClass(el, className) {
+    if (el.classList) {
+        el.classList.add(className);
+    } else {
+        if ( !this.hasClass(el, className) ) {
+            el.className += className + ' ';
+        }
+    }
+}
+
+function removeClass(el, className) {
+    if (!el instanceof HTMLElement && typeof className !== 'string') {
+        throw new Error('The element passed in to removeClass is not a valid HTML element');
+    }
+
+    if (el.classList) {
+        el.classList.remove(className);
+    } else {
+        console.log("%cNo classes on this element.", "color:green; background-color:yellow");
+    }
+}
+
+function hasClass(el, className) {
+    if (el.classList) {
+        return el.classList.contains(className);
+    } else {
+        var r = new RegExp(`(?:\\s|^)${className}(?:\\s|$)`);
+        return r.test(el.className);
+    }
 }
 
 const initialState = {
