@@ -34,10 +34,10 @@ class Payment extends Component {
 
 
     onStoreUpdated() {
-		
+
 		let storeState = store.getState();
 		let payment = storeState.payment;
-		
+
 		this.setState({
 			payment : payment
 		});
@@ -51,7 +51,7 @@ class Payment extends Component {
     validatePayment(event) {
         event.preventDefault()
         let storeState = store.getState();
-		let validation = storeState.validation.payment;
+	      let validation = storeState.validation.payment;
 
         function validateFields(obj) {
             for(var o in obj)
@@ -70,13 +70,13 @@ class Payment extends Component {
         return <div>
             <p className="title">{this.state.title}</p>
             <ul id="breadcrumbs"><li><Link to='/'>Basket</Link></li>  >  <li><Link to='contact'>Contact Details</Link></li>  >  <li className="active">Payment</li></ul>
-            <br /> 
+            <br />
                 <form id="payment">
                     <div className="form-half left">
-                        Card number: <input type="text" data-paymenttype="card" value={this.state.payment.card} onChange={this.handleChangePay} />
-                        Name on card: <input type="text" data-paymenttype="name" value={this.state.payment.name} onChange={this.handleChangePay} />
-                        Expiration date: <input type="text" data-paymenttype="date" value={this.state.payment.date} onChange={this.handleChangePay} />
-                        CCV: <input type="text" data-paymenttype="ccv" value={this.state.payment.ccv} onChange={this.handleChangePay} />
+                      Card number: <input type="text" data-paymenttype="card" value={this.state.payment.card} onBlur={this.handleChangePay} />
+                      Name on card: <input type="text" data-paymenttype="name" value={this.state.payment.name} onBlur={this.handleChangePay} />
+                      Expiration date: <input type="text" data-paymenttype="date" value={this.state.payment.date} onBlur={this.handleChangePay} />
+                      CCV: <input type="text" data-paymenttype="ccv" value={this.state.payment.ccv} onBlur={this.handleChangePay} />
                     </div>
                     <div id="delDetails" className="form-half right">
                         <p>Please, for obvious reasons don't use real card details.  Validation will only accept the following:</p>

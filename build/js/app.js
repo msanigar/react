@@ -63,27 +63,27 @@
 	
 	var _Basket2 = _interopRequireDefault(_Basket);
 	
-	var _Contact = __webpack_require__(244);
+	var _Contact = __webpack_require__(243);
 	
 	var _Contact2 = _interopRequireDefault(_Contact);
 	
-	var _Payment = __webpack_require__(245);
+	var _Payment = __webpack_require__(244);
 	
 	var _Payment2 = _interopRequireDefault(_Payment);
 	
-	var _Complete = __webpack_require__(246);
+	var _Complete = __webpack_require__(245);
 	
 	var _Complete2 = _interopRequireDefault(_Complete);
 	
 	var _reactRouter = __webpack_require__(161);
 	
-	var _reactRedux = __webpack_require__(247);
+	var _reactRedux = __webpack_require__(246);
 	
 	var _store = __webpack_require__(224);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _reactAddonsCssTransitionGroup = __webpack_require__(254);
+	var _reactAddonsCssTransitionGroup = __webpack_require__(253);
 	
 	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 	
@@ -19822,7 +19822,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(243);
+	var _actions = __webpack_require__(242);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -25723,27 +25723,21 @@
 	    if (action.type === 'ADD_TO_BASKET') {
 	        return addToBasket(state, action);
 	    }
-	
 	    if (action.type === 'REMOVE_FROM_BASKET') {
 	        return removeFromBasket(state, action);
 	    }
-	
 	    if (action.type === 'UPDATE_FORM') {
 	        return updateForm(state, action);
 	    }
-	
 	    if (action.type === 'UPDATE_PAY') {
 	        return updatePay(state, action);
 	    }
-	
 	    if (action.type === 'VALIDATE_FORM') {
 	        return validateForm(state, action);
 	    }
-	
 	    if (action.type === 'CLEAR_BASKET') {
 	        return clearBasket(state, action);
 	    }
-	
 	    return state;
 	};
 	
@@ -26957,8 +26951,7 @@
 	};
 
 /***/ },
-/* 242 */,
-/* 243 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27012,7 +27005,7 @@
 	}
 
 /***/ },
-/* 244 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27033,7 +27026,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(243);
+	var _actions = __webpack_require__(242);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -27158,21 +27151,21 @@
 	                        'div',
 	                        { className: 'form-half left' },
 	                        'Forename: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'fname', 'data-required': 'true', value: this.state.contact.fname, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'fname', 'data-required': 'true', value: this.state.contact.fname, onBlur: this.handleChange }),
 	                        'Surname: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'sname', value: this.state.contact.sname, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'sname', value: this.state.contact.sname, onBlur: this.handleChange }),
 	                        'Email: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'email', 'data-required': 'true', value: this.state.contact.email, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'email', 'data-required': 'true', value: this.state.contact.email, onBlur: this.handleChange }),
 	                        'Phone: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'phone', 'data-required': 'true', value: this.state.contact.phone, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'phone', 'data-required': 'true', value: this.state.contact.phone, onBlur: this.handleChange }),
 	                        'Address line 1: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr1', 'data-required': 'true', value: this.state.contact.addr1, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr1', 'data-required': 'true', value: this.state.contact.addr1, onBlur: this.handleChange }),
 	                        'Address line 2: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr2', value: this.state.contact.addr2, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'addr2', value: this.state.contact.addr2, onBlur: this.handleChange }),
 	                        'Postcode: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'pcode', 'data-required': 'true', value: this.state.contact.pcode, onChange: this.handleChange }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'pcode', 'data-required': 'true', value: this.state.contact.pcode, onBlur: this.handleChange }),
 	                        'City: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'city', value: this.state.contact.city, onChange: this.handleChange })
+	                        _react2.default.createElement('input', { type: 'text', 'data-contacttype': 'city', value: this.state.contact.city, onBlur: this.handleChange })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -27262,7 +27255,7 @@
 	exports.default = Contact;
 
 /***/ },
-/* 245 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27283,7 +27276,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(243);
+	var _actions = __webpack_require__(242);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -27414,13 +27407,13 @@
 	                        'div',
 	                        { className: 'form-half left' },
 	                        'Card number: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'card', value: this.state.payment.card, onChange: this.handleChangePay }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'card', value: this.state.payment.card, onBlur: this.handleChangePay }),
 	                        'Name on card: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'name', value: this.state.payment.name, onChange: this.handleChangePay }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'name', value: this.state.payment.name, onBlur: this.handleChangePay }),
 	                        'Expiration date: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'date', value: this.state.payment.date, onChange: this.handleChangePay }),
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'date', value: this.state.payment.date, onBlur: this.handleChangePay }),
 	                        'CCV: ',
-	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'ccv', value: this.state.payment.ccv, onChange: this.handleChangePay })
+	                        _react2.default.createElement('input', { type: 'text', 'data-paymenttype': 'ccv', value: this.state.payment.ccv, onBlur: this.handleChangePay })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -27474,7 +27467,7 @@
 	exports.default = Payment;
 
 /***/ },
-/* 246 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27495,7 +27488,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _actions = __webpack_require__(243);
+	var _actions = __webpack_require__(242);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
@@ -27705,7 +27698,7 @@
 	exports.default = Complete;
 
 /***/ },
-/* 247 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27713,11 +27706,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(248);
+	var _Provider = __webpack_require__(247);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connect = __webpack_require__(251);
+	var _connect = __webpack_require__(250);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -27727,7 +27720,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 248 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27737,11 +27730,11 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(249);
+	var _storeShape = __webpack_require__(248);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _warning = __webpack_require__(250);
+	var _warning = __webpack_require__(249);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -27811,7 +27804,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 249 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27827,7 +27820,7 @@
 	});
 
 /***/ },
-/* 250 */
+/* 249 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27857,7 +27850,7 @@
 	}
 
 /***/ },
-/* 251 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27870,19 +27863,19 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(249);
+	var _storeShape = __webpack_require__(248);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _shallowEqual = __webpack_require__(252);
+	var _shallowEqual = __webpack_require__(251);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _wrapActionCreators = __webpack_require__(253);
+	var _wrapActionCreators = __webpack_require__(252);
 	
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 	
-	var _warning = __webpack_require__(250);
+	var _warning = __webpack_require__(249);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -28258,7 +28251,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 252 */
+/* 251 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28289,7 +28282,7 @@
 	}
 
 /***/ },
-/* 253 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28306,13 +28299,13 @@
 	}
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(255);
+	module.exports = __webpack_require__(254);
 
 /***/ },
-/* 255 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28333,8 +28326,8 @@
 	
 	var assign = __webpack_require__(40);
 	
-	var ReactTransitionGroup = __webpack_require__(256);
-	var ReactCSSTransitionGroupChild = __webpack_require__(258);
+	var ReactTransitionGroup = __webpack_require__(255);
+	var ReactCSSTransitionGroupChild = __webpack_require__(257);
 	
 	function createTransitionTimeoutPropValidator(transitionType) {
 	  var timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -28400,7 +28393,7 @@
 	module.exports = ReactCSSTransitionGroup;
 
 /***/ },
-/* 256 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28417,7 +28410,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var ReactTransitionChildMapping = __webpack_require__(257);
+	var ReactTransitionChildMapping = __webpack_require__(256);
 	
 	var assign = __webpack_require__(40);
 	var emptyFunction = __webpack_require__(16);
@@ -28610,7 +28603,7 @@
 	module.exports = ReactTransitionGroup;
 
 /***/ },
-/* 257 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28713,7 +28706,7 @@
 	module.exports = ReactTransitionChildMapping;
 
 /***/ },
-/* 258 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28733,8 +28726,8 @@
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(4);
 	
-	var CSSCore = __webpack_require__(259);
-	var ReactTransitionEvents = __webpack_require__(260);
+	var CSSCore = __webpack_require__(258);
+	var ReactTransitionEvents = __webpack_require__(259);
 	
 	var onlyChild = __webpack_require__(157);
 	
@@ -28883,7 +28876,7 @@
 	module.exports = ReactCSSTransitionGroupChild;
 
 /***/ },
-/* 259 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28986,7 +28979,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 260 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**

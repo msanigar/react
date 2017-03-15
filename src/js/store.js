@@ -3,31 +3,25 @@ import thunk from 'redux-thunk';
 import { loadState, saveState } from './localStorage';
 
 const mainReducer = (state = initialState, action) => {
-    
-    if(action.type === 'ADD_TO_BASKET') {
-        return addToBasket(state, action); 
-    }
 
+    if(action.type === 'ADD_TO_BASKET') {
+        return addToBasket(state, action);
+    }
     if(action.type === 'REMOVE_FROM_BASKET') {
         return removeFromBasket(state, action);
     }
-
     if(action.type === 'UPDATE_FORM') {
         return updateForm(state, action);
     }
-
     if(action.type === 'UPDATE_PAY') {
         return updatePay(state, action);
     }
-
     if(action.type === 'VALIDATE_FORM') {
         return validateForm(state, action);
     }
-
     if(action.type === 'CLEAR_BASKET') {
         return clearBasket(state, action);
     }
-
 	return state;
 };
 
@@ -90,11 +84,11 @@ function updateForm(state, action) {
                     removeClass(elm, "error");
                 }
             }
-        }       
+        }
 
         newState.contact[field] = value;
 
-        return newState;  
+        return newState;
 }
 
 function updatePay(state, action) {
@@ -124,26 +118,26 @@ function updatePay(state, action) {
         } else {
             newState.validation.payment[fieldType] = false;
         }
-    } 
+    }
 
     newState.payment[field] = value;
 
     return newState;
-    
+
 }
 
 function addToBasket(state, action) {
     var newState = Object.assign({}, state);
     var existingItem = returnExistingItemFromBasket(newState, action.item.sku);
     var basketItems = state.basket.items;
-    
+
     if (existingItem) {
         existingItem.qty++;
     } else {
         newState.basket.items.push({
-            sku: action.item.sku, 
+            sku: action.item.sku,
             name: action.item.name,
-            qty: 1, 
+            qty: 1,
             price: action.item.price
         });
     }
@@ -162,7 +156,7 @@ function removeFromBasket(state, action) {
     var newState = Object.assign({}, state);
     let existingItem = returnExistingItemFromBasket(newState, action.item.sku);
     var basketItems = state.basket.items;
-    
+
     if (existingItem) {
         if (existingItem.qty > 1) {
             existingItem.qty--;
@@ -189,7 +183,7 @@ function returnExistingItemFromBasket(state, sku) {
     var existingItems = state.basket.items.filter((item) => {
         return item.sku === sku;
     });
-    
+
     return existingItems.length && existingItems[0];
 }
 
