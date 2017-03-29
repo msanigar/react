@@ -3,7 +3,7 @@ module.exports = function(config) {
  
     basePath: '',
  
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'chai'],
  
     files: [
         'node_modules/babel-polyfill/browser.js',
@@ -46,7 +46,8 @@ module.exports = function(config) {
         require('karma-safari-launcher'),
         require('karma-phantomjs-launcher'),
         require('karma-ie-launcher'),
-        require('karma-mocha')
+        require('karma-mocha'),
+        require('karma-chai')
     ],
  
     reporters: ['progress'],

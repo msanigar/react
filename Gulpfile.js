@@ -13,7 +13,7 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
 var stream = require('webpack-stream');
 var browserSync = require('browser-sync');
-var Server = require('karma').Server; 
+var Server = require('karma').Server;
 
 gulp.task('webpack', [], function () {
     return gulp.src(path.ALL)
@@ -66,21 +66,13 @@ gulp.task("webpack-dev-server", function (callback) {
         stats: {
             colors: true
         }
-    }).listen(3000, "localhost", function (err) {
+    }).listen(3030, "localhost", function (err) {
         if (err) throw new gutil.PluginError("webpack-dev-server", err);
         gutil.log("[webpack-dev-server]", "http://localhost:3000");
     });
 });
 
-gulp.task('karma:watch', function (done) {
-  new Server({
-    configFile: __dirname + '/karma.config.js',
-    singleRun: false,
-    autoWatch: true
-  }, done).start();
-});
- 
-gulp.task('karma', function (done) {
+gulp.task('test:browsers', function (done) {
   new Server({
     configFile: __dirname + '/karma.config.js',
     singleRun: true,
