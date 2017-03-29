@@ -70,14 +70,14 @@ class Contact extends Component {
             <br />
                  <form id="contact">
                     <div className="form-half left">
-                        Forename: <input type="text" data-contacttype="fname" data-required="true" value={this.state.contact.fname} onBlur={this.handleChange} />
-                        Surname: <input type="text" data-contacttype="sname" value={this.state.contact.sname} onBlur={this.handleChange} />
-                        Email: <input type="text" data-contacttype="email" data-required="true" value={this.state.contact.email} onBlur={this.handleChange} />
-                        Phone: <input type="text" data-contacttype="phone" data-required="true" value={this.state.contact.phone} onBlur={this.handleChange} />
-                        Address line 1: <input type="text" data-contacttype="addr1" data-required="true" value={this.state.contact.addr1} onBlur={this.handleChange} />
-                        Address line 2: <input type="text" data-contacttype="addr2" value={this.state.contact.addr2} onBlur={this.handleChange} />
-                        Postcode: <input type="text" data-contacttype="pcode" data-required="true" value={this.state.contact.pcode} onBlur={this.handleChange} />
-                        City: <input type="text" data-contacttype="city" value={this.state.contact.city} onBlur={this.handleChange} />
+                        Forename: <input type="text" data-contacttype="fname" data-required="true" value={this.state.contact.fname} onChange={this.handleChange} />
+                        Surname: <input type="text" data-contacttype="sname" value={this.state.contact.sname} onChange={this.handleChange} />
+                        Email: <input type="text" data-contacttype="email" data-required="true" value={this.state.contact.email} onChange={this.handleChange} />
+                        Phone: <input type="text" data-contacttype="phone" data-required="true" value={this.state.contact.phone} onChange={this.handleChange} />
+                        Address line 1: <input type="text" data-contacttype="addr1" data-required="true" value={this.state.contact.addr1} onChange={this.handleChange} />
+                        Address line 2: <input type="text" data-contacttype="addr2" value={this.state.contact.addr2} onChange={this.handleChange} />
+                        Postcode: <input type="text" data-contacttype="pcode" data-required="true" value={this.state.contact.pcode} onChange={this.handleChange} />
+                        City: <input type="text" data-contacttype="city" value={this.state.contact.city} onChange={this.handleChange} />
                     </div>
                     <div id="delDetails" className="form-half right">
                         <p>Please use the following contact details:</p>
