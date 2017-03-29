@@ -51,7 +51,7 @@ module.exports = function(config) {
  
     reporters: ['progress'],
  
-    port: 3000,
+    port: 9867,
  
     colors: true,
  
