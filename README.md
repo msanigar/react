@@ -17,6 +17,15 @@ gulp
 
 # Tests
 
+Chrome and IE seem to run off the shelf, however FireFox and Safari often require "linking".
+
+``` bash
+
+npm install karma-firefox-launcher --save-dev --link
+npm install karma-safari-launcher --save-dev --link
+
+```
+
 Single run, headless:
 
 ``` bash

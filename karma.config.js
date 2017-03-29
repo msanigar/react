@@ -60,14 +60,7 @@ module.exports = function(config) {
  
     autoWatch: false,
  
-    browsers: ['PhantomJS', 'Chrome', 'Firefox', 'IE', 'IE9', 'Safari'],
- 
-    customLaunchers: {
-      IE9: {
-        base: 'IE',
-        'x-ua-compatible': 'IE=EmulateIE9'
-      }
-    },
+    browsers: ['PhantomJS', 'Chrome', 'Firefox', 'IE', 'Safari'],
  
     singleRun: true,
  
